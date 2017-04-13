@@ -3,6 +3,7 @@
 <!-- outside cards-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,8 +17,13 @@
 
     <include
         android:id="@+id/card_heart"
-        layout="@layout/card_heart"/>
-
+        layout="@layout/card_heart" />
+    <include
+        android:id="@+id/card_bp"
+        layout="@layout/card_bp"/>
+    <include
+        android:id="@+id/card_temperature"
+        layout="@layout/card_temperature"/>
 
 </LinearLayout>
 

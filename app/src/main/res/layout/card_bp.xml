@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/colorCardHeader">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:paddingTop="4dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Blood pressure"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/bp_icon"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/left_syst_nbr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="131"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:id="@+id/left_diast_nbr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="71"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:id="@+id/bp_left_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Now"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/bp_icon_2"
+                    android:layout_centerInParent="true"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="30dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_alignParentRight="true">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="128"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="72"
+                        android:textSize="30sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily avg"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
