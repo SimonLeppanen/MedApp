@@ -24,7 +24,12 @@
     <include
         android:id="@+id/card_temperature"
         layout="@layout/card_temperature"/>
-
+    <include
+        android:id="@+id/card_sleep"
+        layout="@layout/card_sleep"/>
+    <include
+        android:id="@+id/card_pef"
+        layout="@layout/card_pef" />
 </LinearLayout>
 
 
