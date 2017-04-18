@@ -20,12 +20,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /* public void cardBPClicked(View view) {
-        Intent i = new Intent(MainActivity.this, HeartActivity.class);
+    public void cardBPClicked(View view) {
+        Intent i = new Intent(MainActivity.this, BPActivity.class);
         startActivity(i);
     }
 
-    public void cardPEFClicked(View view) {
+    /* public void cardPEFClicked(View view) {
         Intent i = new Intent(MainActivity.this, HeartActivity.class);
         startActivity(i);
     }
@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
     public void cardSleepClicked(View view) {
         Intent i = new Intent(MainActivity.this, HeartActivity.class);
         startActivity(i);
-    }
+    }*/
 
     public void cardTemperatureClicked(View view) {
-        Intent i = new Intent(MainActivity.this, HeartActivity.class);
+        Intent i = new Intent(MainActivity.this, TemperatureActivity.class);
         startActivity(i);
-    } */
+    }
 
 }

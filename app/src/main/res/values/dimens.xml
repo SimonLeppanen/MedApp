@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">10dp</dimen>
     <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="header_thickness">30dp</dimen>
+    <dimen name="date_text_size">16sp</dimen>
 </resources>

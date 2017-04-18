@@ -9,37 +9,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:gravity="center">
             <ImageView
                 android:id="@+id/dateBackButton"
                 android:onClick="dateChange"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/back_arrow_icon"
-                />
-            <TextView
-                android:id="@+id/date"
+                android:src="@drawable/back_arrow_icon" />
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="Today"
-                android:onClick="dateButtonClick"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="dateButtonClick">
+                <TextView
+                    android:id="@+id/dayBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/date_text_size"
+                    android:text="Today"/>
+                <TextView
+                    android:id="@+id/dateBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/date_text_size"
+                    android:text="Sep 25"/>
+            </LinearLayout>
             <ImageView
                 android:id="@+id/dateForwardButton"
                 android:onClick="dateChange"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/forward_arrow_icon"
                 />
@@ -133,12 +147,11 @@
         android:id="@+id/graph_heart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-         />
+        android:layout_weight="1" />
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_marginBottom="10dp">
 
         <TableRow>
             <TextView
