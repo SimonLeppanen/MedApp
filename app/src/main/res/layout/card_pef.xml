@@ -61,14 +61,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="LAST"
-                    android:textSize="10sp"/>
+                    android:textSize="12sp"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="510"
-                android:textSize="60sp"/>
+                android:textSize="50sp"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     android:text="NEXT"
                     android:layout_marginTop="8dp"
                     android:layout_gravity="center"
-                    android:textSize="10sp"/>
+                    android:textSize="12sp"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

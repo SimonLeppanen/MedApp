@@ -20,7 +20,7 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="@dimen/header_thickness"
                     android:layout_weight="1"
                     android:paddingTop="4dp"
                     android:layout_marginLeft="5dp"
@@ -52,18 +52,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="131"
-                        android:textSize="30sp"/>
+                        android:textSize="40sp"/>
                     <TextView
                         android:id="@+id/left_diast_nbr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="71"
-                        android:textSize="30sp"/>
+                        android:textSize="40sp"/>
                     <TextView
                         android:id="@+id/bp_left_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Now"/>
+                        android:textSize="12sp"
+                        android:text="NOW"/>
                 </LinearLayout>
 
                 <ImageView
@@ -83,16 +84,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="128"
-                        android:textSize="30sp"/>
+                        android:textSize="40sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="72"
-                        android:textSize="30sp"/>
+                        android:textSize="40sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily avg"/>
+                        android:textSize="12sp"
+                        android:text="DAILY AVG"/>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

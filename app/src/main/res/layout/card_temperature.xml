@@ -57,13 +57,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="60sp"
+                android:textSize="50sp"
                 android:text="36,8" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/temp_nbr"
-                android:layout_centerVertical="true"
+                android:layout_alignBottom="@+id/temp_nbr"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:text="°C"
@@ -74,7 +74,7 @@
                 android:layout_below="@+id/temp_nbr"
                 android:layout_centerHorizontal="true"
                 android:text="Normal"
-                android:textSize="30sp"/>
+                android:textSize="24sp"/>
 
         </RelativeLayout>
     </LinearLayout>
