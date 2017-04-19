@@ -25,15 +25,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    /* public void cardPEFClicked(View view) {
-        Intent i = new Intent(MainActivity.this, HeartActivity.class);
+    public void cardPEFClicked(View view) {
+        Intent i = new Intent(MainActivity.this, PEFActivityMain.class);
         startActivity(i);
     }
 
     public void cardSleepClicked(View view) {
-        Intent i = new Intent(MainActivity.this, HeartActivity.class);
+        Intent i = new Intent(MainActivity.this, SleepActivity.class);
         startActivity(i);
-    }*/
+    }
 
     public void cardTemperatureClicked(View view) {
         Intent i = new Intent(MainActivity.this, TemperatureActivity.class);

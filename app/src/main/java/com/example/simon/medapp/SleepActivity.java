@@ -19,28 +19,28 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by simon on 2017-04-18.
+ * Created by simon on 2017-04-19.
  */
 
-public class BPActivity extends AppCompatActivity{
+public class SleepActivity extends AppCompatActivity {
 
     Date date;
-    private LineChart bpLineChart;
-    private BarChart bpBarChart;
+    private LineChart sleepLineChart;
+    private BarChart sleepBarChart;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bp);
+        setContentView(R.layout.activity_sleep);
 
         //Runs graph to be able to create layout
-        findViewById(R.id.linegraph_bp).post(new Runnable() {
+        findViewById(R.id.linegraph_sleep).post(new Runnable() {
             @Override
             public void run() {
                 setupLineGraph();
             }
         });
-        findViewById(R.id.bargraph_bp).post(new Runnable() {
+        findViewById(R.id.bargraph_sleep).post(new Runnable() {
             @Override
             public void run() {
                 setupBarGraph();
@@ -49,20 +49,7 @@ public class BPActivity extends AppCompatActivity{
 
         setTodaysDate();
         drawSleepGraphs();
-
     }
-
-    private void drawSleepGraphs() {
-
-
-        setupLineGraph();
-        setupBarGraph();
-
-        bpLineChart.invalidate();
-        bpBarChart.invalidate();// refresh
-    }
-
-
 
     private void setTodaysDate() {
         // NOT FINISHED!
@@ -73,48 +60,55 @@ public class BPActivity extends AppCompatActivity{
         dateBox.setText(Methods.getDate(date));
     }
 
-    /**
-     * Creates graph, adds data
-     */
+    private void drawSleepGraphs() {
+
+
+        setupLineGraph();
+        setupBarGraph();
+
+        sleepLineChart.invalidate(); // refresh
+        sleepBarChart.invalidate(); // refresh
+    }
+
     private void setupLineGraph() {
-        bpLineChart = (LineChart) findViewById(R.id.linegraph_bp);
+        sleepLineChart = (LineChart) findViewById(R.id.linegraph_sleep);
 
-        List<Entry> entries_syst = new ArrayList<>();
-        entries_syst.add(new Entry(00, 132));
-        entries_syst.add(new Entry(01, 131));
-        entries_syst.add(new Entry(02, 123));
-        entries_syst.add(new Entry(03, 131));
-        entries_syst.add(new Entry(04, 121));
-        entries_syst.add(new Entry(05, 143));
-        entries_syst.add(new Entry(06, 138));
-        entries_syst.add(new Entry(07, 135));
-        LineDataSet lineSet_syst = new LineDataSet(entries_syst, "Systolic");
-        lineSet_syst.setColor(getResources().getColor(R.color.BPsyst));
-        lineSet_syst.setLineWidth(5);
+        List<Entry> entries_awake = new ArrayList<>();
+        entries_awake.add(new Entry(00, 132));
+        entries_awake.add(new Entry(01, 131));
+        entries_awake.add(new Entry(02, 123));
+        entries_awake.add(new Entry(03, 131));
+        entries_awake.add(new Entry(04, 121));
+        entries_awake.add(new Entry(05, 143));
+        entries_awake.add(new Entry(06, 138));
+        entries_awake.add(new Entry(07, 135));
+        LineDataSet lineSet_awake = new LineDataSet(entries_awake, "Awake");
+        lineSet_awake.setColor(getResources().getColor(R.color.sleep_awake));
+        lineSet_awake.setLineWidth(5);
 
-        List<Entry> entries_diast = new ArrayList<>();
-        entries_diast.add(new Entry(00, 71));
-        entries_diast.add(new Entry(01, 77));
-        entries_diast.add(new Entry(02, 67));
-        entries_diast.add(new Entry(03, 81));
-        entries_diast.add(new Entry(04, 71));
-        entries_diast.add(new Entry(05, 74));
-        entries_diast.add(new Entry(06, 78));
-        entries_diast.add(new Entry(07, 72));
-        LineDataSet lineSet_diast = new LineDataSet(entries_diast, "Diastolic");
-        lineSet_diast.setColor(getResources().getColor(R.color.BPdiast));
-        lineSet_diast.setLineWidth(5);
+        List<Entry> entries_rem = new ArrayList<>();
+        entries_rem.add(new Entry(00, 71));
+        entries_rem.add(new Entry(01, 77));
+        entries_rem.add(new Entry(02, 67));
+        entries_rem.add(new Entry(03, 81));
+        entries_rem.add(new Entry(04, 71));
+        entries_rem.add(new Entry(05, 74));
+        entries_rem.add(new Entry(06, 78));
+        entries_rem.add(new Entry(07, 72));
+        LineDataSet lineSet_rem = new LineDataSet(entries_rem, "REM");
+        lineSet_rem.setColor(getResources().getColor(R.color.sleep_rem));
+        lineSet_rem.setLineWidth(5);
 
         List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineSet_syst);
-        dataSets.add(lineSet_diast);
+        dataSets.add(lineSet_awake);
+        dataSets.add(lineSet_rem);
 
         LineData lineData = new LineData(dataSets);
-        bpLineChart.setData(lineData);
+        sleepLineChart.setData(lineData);
     }
 
     private void setupBarGraph() {
-        bpBarChart = (BarChart) findViewById(R.id.bargraph_bp);
+        sleepBarChart = (BarChart) findViewById(R.id.bargraph_sleep);
         List<BarEntry> entries = new ArrayList<>();
 
         entries.add(new BarEntry(01, new float[]{71,132}));
@@ -126,10 +120,12 @@ public class BPActivity extends AppCompatActivity{
         entries.add(new BarEntry(07, new float[]{72,135}));
 
         BarDataSet dataSet = new BarDataSet(entries, "BP");
-        dataSet.setColors(getResources().getColor(R.color.BPsyst), getResources().getColor(R.color.BPdiast));
+        dataSet.setColors(getResources().getColor(R.color.sleep_rem), getResources().getColor(R.color.sleep_awake));
         BarData data = new BarData(dataSet);
-        bpBarChart.setData(data);
+        sleepBarChart.setData(data);
     }
+
+
 
 
 

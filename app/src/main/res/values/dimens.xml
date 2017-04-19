@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="header_thickness">30dp</dimen>
     <dimen name="date_text_size">16sp</dimen>
+    <dimen name="pef_log_text_size">16sp</dimen>
+    <dimen name="pef_procedure_text_size">20sp</dimen>
 </resources>

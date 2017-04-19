@@ -17,13 +17,37 @@
         </activity>
         <activity
             android:name=".HeartActivity"
-            android:parentActivityName=".MainActivity" />
+            android:label="Heart"
+            android:icon="@drawable/heart_icon"
+            android:parentActivityName=".MainActivity"  />
         <activity
             android:name=".TemperatureActivity"
+            android:label="Temperature"
+            android:icon="@drawable/temperature_icon"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".BPActivity"
+            android:label="Blood pressure"
+            android:icon="@drawable/bp_icon"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SleepActivity"
+            android:label="Sleep"
+            android:icon="@drawable/sleep_icon"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".PEFActivityMain"
+            android:label="PEF"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".PEFActivityEntry"
+            android:label="PEF - Entry"
+            android:parentActivityName=".PEFActivityMain" />
+        <activity
+            android:name=".PEFActivityAdd"
+            android:label="PEF - add"
+            android:parentActivityName=".PEFActivityMain" />
+
 
     </application>
 

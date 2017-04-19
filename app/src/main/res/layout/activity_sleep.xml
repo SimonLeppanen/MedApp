@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginBottom="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,79 +53,104 @@
 
     </LinearLayout>
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
             android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            >
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/left_syst_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="131"
-                android:textSize="40sp"/>
+                android:text="06:38"
+                android:textSize="50sp"
+                />
             <TextView
-                android:id="@+id/left_diast_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="71"
-                android:textSize="40sp"/>
-            <TextView
-                android:id="@+id/bp_left_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="NOW"/>
+                android:layout_marginLeft="5dp"
+                android:text="Time slept"
+                android:textSize="18sp" />
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:src="@drawable/bp_icon_2"
-            android:layout_centerInParent="true"/>
-
         <LinearLayout
+            android:id="@+id/sleep_textbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
             android:orientation="vertical"
-            android:gravity="center"
-            android:layout_alignParentRight="true">
+            android:layout_toLeftOf="@+id/sleep_nbrbox"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="128"
-                android:textSize="40sp"/>
+                android:text="Awake"
+                android:textSize="18sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="72"
-                android:textSize="40sp"/>
+                android:text="REM"
+                android:textSize="18sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="DAILY AVG"/>
+                android:text="Light"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deep"
+                android:textSize="18sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/sleep_nbrbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:28"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02:26"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01:58"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02:51"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
         </LinearLayout>
     </RelativeLayout>
+
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linegraph_bp"
+        android:id="@+id/linegraph_sleep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
     <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/bargraph_bp"
+        android:id="@+id/bargraph_sleep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
-
-
 
 </LinearLayout>

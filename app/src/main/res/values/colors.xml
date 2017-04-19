@@ -7,4 +7,13 @@
     <color name="colorCardHeader2">#92AFD7</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="BPsyst">#f4a742</color>
+    <color name="BPdiast">#428ff4</color>
+
+    <color name="sleep_awake">#BB342F</color>
+    <color name="sleep_rem">#f441e5</color>
+    <color name="sleep_light">#428ff4</color>
+    <color name="sleep_deep">#4441f4</color>
+
 </resources>
