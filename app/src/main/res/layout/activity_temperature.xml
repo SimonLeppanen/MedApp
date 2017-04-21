@@ -59,8 +59,8 @@
         android:layout_marginBottom="25dp">
         <ImageView
             android:id="@+id/temp_img"
-            android:layout_width="100dp"
-            android:layout_height="110dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/temperature_icon_2"/>
         <TextView
@@ -84,8 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/temp_nbr"
             android:layout_centerHorizontal="true"
-            android:text="Normal"
-            android:textSize="24sp"/>
+            android:paddingRight="20dp"
+            android:text="NORMAL"
+            android:textSize="16sp"/>
     </RelativeLayout>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/graph_heart"

@@ -6,4 +6,5 @@
     <dimen name="date_text_size">16sp</dimen>
     <dimen name="pef_log_text_size">16sp</dimen>
     <dimen name="pef_procedure_text_size">20sp</dimen>
+    <dimen name="small_descriptive_caps">14sp</dimen>
 </resources>

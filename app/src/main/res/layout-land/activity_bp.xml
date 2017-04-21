@@ -97,7 +97,7 @@
                 android:id="@+id/bp_left_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="@dimen/small_descriptive_caps"
                 android:text="NOW"/>
         </LinearLayout>
 
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:textSize="@dimen/small_descriptive_caps"
                 android:text="DAILY AVG"/>
         </LinearLayout>
     </LinearLayout>

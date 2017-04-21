@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/add_icon_shadow"
+        android:src="@mipmap/add_button"
         android:onClick="pefAddButton"/>
     <TableLayout
         android:layout_width="match_parent"
