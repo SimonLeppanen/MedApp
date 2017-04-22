@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingBottom="10dp"
         android:orientation="vertical">
 
@@ -126,13 +126,32 @@
                     android:paddingRight="48dp"
                     android:text="HRV"
                     android:textSize="@dimen/small_descriptive_caps" />
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/heart_icon_2"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="RESTING"
+                    android:textSize="16sp"/>
             </LinearLayout>
+
         </LinearLayout>
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/graph_heart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1" />
         <TableLayout
             android:layout_width="match_parent"

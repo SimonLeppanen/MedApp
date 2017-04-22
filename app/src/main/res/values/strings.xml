@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MedApp</string>
+    <string-array name="array_menu">
+        <item>Log</item>
+        <item>Edit</item>
+        <item>Settings</item>
+        <item>Help</item>
+    </string-array>
+    <string name="navigation_drawer_open">open drawer</string>
+    <string name="navigation_drawer_close">close drawer</string>
 </resources>
