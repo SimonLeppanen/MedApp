@@ -5,7 +5,7 @@
     <color name="colorPrimaryDark">#4F3130</color>
     <color name="colorCardHeader">#ffa3a4</color>
     <color name="colorCardHeader2">#92AFD7</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#428ff4</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="BPsyst">#f4a742</color>
@@ -15,5 +15,6 @@
     <color name="sleep_rem">#f441e5</color>
     <color name="sleep_light">#428ff4</color>
     <color name="sleep_deep">#4441f4</color>
+    <color name="addbuttonbackground">#67cd7f</color>
 
 </resources>

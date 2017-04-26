@@ -1,6 +1,7 @@
 package com.example.simon.medapp;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -20,6 +21,8 @@ public class PEFActivityEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pef_entry);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorCardHeader2)));
         Bundle extras = getIntent().getExtras();
 
         if(extras == null) {

@@ -1,5 +1,6 @@
 package com.example.simon.medapp;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class SleepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep);
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorCardHeader)));
         //Runs graph to be able to create layout
         findViewById(R.id.linegraph_sleep).post(new Runnable() {
             @Override

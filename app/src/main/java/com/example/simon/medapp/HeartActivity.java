@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -14,6 +15,8 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -42,6 +45,8 @@ public class HeartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heart);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorCardHeader)));
 
         //Runs graph to be able to create layout
         findViewById(R.id.graph_heart).post(new Runnable() {
@@ -102,8 +107,28 @@ public class HeartActivity extends AppCompatActivity {
 
         LineDataSet heartSet = new LineDataSet(entries, "Pulse");
         heartSet.setLineWidth(10);
+        heartSet.setDrawCircles(false);
+        heartSet.setDrawValues(false);
+        heartSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         LineData lineData = new LineData(heartSet);
         heartChart.setData(lineData);
+        Description description = new Description();
+        description.setText("");
+        heartChart.setDescription(description);
+
+        heartChart.getAxisLeft().setDrawGridLines(false);
+        heartChart.getAxisRight().setDrawGridLines(false);
+        heartChart.getXAxis().setDrawGridLines(false);
+        heartChart.setDrawGridBackground(false);
+        heartChart.setDrawBorders(false);
+
+        Legend legend = heartChart.getLegend();
+        legend.setEnabled(false);
+
+        heartChart.invalidate();
+
+
+
     }
 }
 

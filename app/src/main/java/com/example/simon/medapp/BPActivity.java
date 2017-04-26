@@ -1,5 +1,6 @@
 package com.example.simon.medapp;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -32,6 +33,9 @@ public class BPActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bp);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.colorCardHeader)));
 
         //Runs graph to be able to create layout
         findViewById(R.id.linegraph_bp).post(new Runnable() {
