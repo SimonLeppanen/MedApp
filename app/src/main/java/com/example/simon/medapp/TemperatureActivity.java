@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -24,6 +25,10 @@ import java.util.List;
  */
 
 public class TemperatureActivity extends AppCompatActivity {
+
+    float maxTemp = 42.5f;
+    float fever = 37.5f;
+    float minTemp = 32.5f;
 
     private Date date;
     private LineChart temperatureChart;
@@ -64,11 +69,18 @@ public class TemperatureActivity extends AppCompatActivity {
 
         temperatureChart = (LineChart) findViewById(R.id.graph_heart);
         int graphHeight = temperatureChart.getHeight();
-        Paint paint = temperatureChart.getRenderer().getPaintRender();
+
+        int normalColor = ContextCompat.getColor(this,R.color.temperature_normal);
+        int feverColor = ContextCompat.getColor(this,R.color.temperature_fever);
+        int[] colors = {feverColor,feverColor,normalColor,normalColor};
+        float[] positions = {1f,.55f,.45f,0f};
+
         LinearGradient linGrad = new LinearGradient(0, 0, 0, graphHeight,
-                getResources().getColor(R.color.colorCardHeader),
-                getResources().getColor(R.color.colorCardHeader2),
+                colors,
+                positions,
                 Shader.TileMode.REPEAT);
+
+        Paint paint = temperatureChart.getRenderer().getPaintRender();
         paint.setShader(linGrad);
     }
 

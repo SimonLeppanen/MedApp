@@ -196,6 +196,7 @@ class Person implements Serializable {
     private int weight;
     private int height;
     private String gender;
+    private int age;
     Calendar cal;
 
     public Person(int weight, int height, String gender, birthDay birthday) {
@@ -203,7 +204,10 @@ class Person implements Serializable {
         this.height = height;
         this.gender = gender;
         this.cal = birthday.getCal();
-
+    }
+    public int getAge() {
+        Calendar today = Calendar.getInstance();
+        return today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
     }
 
 }
