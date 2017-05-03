@@ -81,7 +81,7 @@
                 android:text="71"
                 android:textSize="40sp"/>
             <TextView
-                android:id="@+id/bp_left_txt"
+                android:id="@+id/bp_left_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_descriptive_caps"
@@ -102,16 +102,19 @@
             android:gravity="center"
             android:layout_alignParentRight="true">
             <TextView
+                android:id="@+id/right_syst_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="128"
+                android:text="135"
                 android:textSize="40sp"/>
             <TextView
+                android:id="@+id/right_diast_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="72"
                 android:textSize="40sp"/>
             <TextView
+                android:id="@+id/bp_right_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_descriptive_caps"

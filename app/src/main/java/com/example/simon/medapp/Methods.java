@@ -35,7 +35,7 @@ public class Methods {
      * @return String for month and day, ex. September, 25
      */
     public static String getDate(Date d) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("M, d");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM, d");
         return dateFormat.format(d);
     }
 

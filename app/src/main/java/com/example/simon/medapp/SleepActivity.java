@@ -1,23 +1,39 @@
 package com.example.simon.medapp;
 
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.lang.StrictMath.round;
 
 /**
  * Created by simon on 2017-04-19.
@@ -28,6 +44,38 @@ public class SleepActivity extends AppCompatActivity {
     Date date;
     private LineChart sleepLineChart;
     private BarChart sleepBarChart;
+    private List<Entry> lineEntries1;
+    private List<Entry> lineEntries2;
+    private LineDataSet lineDataSet1;
+    private LineDataSet lineDataSet2;
+    private LineData lineData1;
+    private LineData lineData2;
+    private BarDataSet barDataSet;
+    private BarData data;
+    private List<BarEntry> barEntries;
+
+    private int awakeColor;
+    private int remColor;
+    private int lightColor;
+    private int deepColor;
+
+    private String currentTotalSlept = "06:38";
+    private String currentAwake = "00:28";
+    private String currentRem = "02:26";
+    private String currentLight = "01:58";
+    private String currentDeep = "02:51";
+
+    private TextView totalNbr;
+    private TextView totalText;
+    private TextView remNbr;
+    private TextView remText;
+    private TextView awakeNbr;
+    private TextView awakeText;
+    private TextView lightNbr;
+    private TextView lightText;
+    private TextView deepNbr;
+    private TextView deepText;
+    private boolean firstSet;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +88,33 @@ public class SleepActivity extends AppCompatActivity {
         findViewById(R.id.linegraph_sleep).post(new Runnable() {
             @Override
             public void run() {
-                setupLineGraph();
+                drawSleepGraphs();
             }
         });
         findViewById(R.id.bargraph_sleep).post(new Runnable() {
             @Override
             public void run() {
-                setupBarGraph();
+                drawSleepGraphs();
             }
         });
-
+        firstSet = true;
         setTodaysDate();
+        getTextViews();
         drawSleepGraphs();
     }
 
+    private void getTextViews() {
+        totalNbr = (TextView) findViewById(R.id.total_nbr);
+        totalText = (TextView) findViewById(R.id.total_text);
+        awakeNbr = (TextView) findViewById(R.id.awake_nbr);
+        awakeText = (TextView) findViewById(R.id.awake_text);
+        remNbr = (TextView) findViewById(R.id.rem_nbr);
+        remText = (TextView) findViewById(R.id.rem_text);
+        lightNbr = (TextView) findViewById(R.id.light_nbr);
+        lightText = (TextView) findViewById(R.id.light_text);
+        deepNbr = (TextView) findViewById(R.id.deep_nbr);
+        deepText = (TextView) findViewById(R.id.deep_text);
+    }
     private void setTodaysDate() {
         // NOT FINISHED!
         date = new Date();
@@ -64,72 +125,377 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     private void drawSleepGraphs() {
-
-
+        setupLineEntries();
         setupLineGraph();
+        setupGradient();
+
+        setupBarEntries();
         setupBarGraph();
 
         sleepLineChart.invalidate(); // refresh
         sleepBarChart.invalidate(); // refresh
     }
 
+    private void setupGradient() {
+
+        ViewPortHandler v = sleepLineChart.getViewPortHandler();
+        float chartHeight = v.contentHeight();
+        float viewHeight = v.getChartHeight();
+        float y0 = v.contentTop();
+        float y1 = v.contentBottom();
+
+
+        int graphHeight = sleepLineChart.getHeight();
+        float grad = .1f;
+
+        awakeColor = ContextCompat.getColor(this,R.color.sleep_awake);
+        remColor = ContextCompat.getColor(this,R.color.sleep_rem);
+        lightColor = ContextCompat.getColor(this,R.color.sleep_light);
+        deepColor = ContextCompat.getColor(this,R.color.sleep_deep);
+
+        int[] colors = {awakeColor,awakeColor,remColor,remColor,lightColor,lightColor,deepColor,deepColor};
+
+        float[] positions = {0f,.25f-grad,.25f+grad,.5f-grad, .5f+grad, .75f-grad, .75f+grad, 1f};
+
+        LinearGradient linGrad = new LinearGradient(0f, y0, 0f, y1,
+                colors,
+                positions,
+                Shader.TileMode.REPEAT);
+
+        Paint paint = sleepLineChart.getRenderer().getPaintRender();
+        paint.setShader(linGrad);
+
+    }
+
+    private void setupLineEntries() {
+        lineEntries1 = new ArrayList<>();
+        lineEntries1.add(new Entry(0, 4));
+        lineEntries1.add(new Entry(1, 4));
+        lineEntries1.add(new Entry(2, 4));
+        lineEntries1.add(new Entry(3, 3));
+        lineEntries1.add(new Entry(4, 3));
+        lineEntries1.add(new Entry(5, 3));
+        lineEntries1.add(new Entry(6, 2));
+        lineEntries1.add(new Entry(7, 2));
+        lineEntries1.add(new Entry(8, 2));
+        lineEntries1.add(new Entry(9, 3));
+        lineEntries1.add(new Entry(10, 3));
+        lineEntries1.add(new Entry(11, 3));
+        lineEntries1.add(new Entry(12, 3));
+        lineEntries1.add(new Entry(13, 3));
+        lineEntries1.add(new Entry(14, 3));
+        lineEntries1.add(new Entry(15, 2));
+        lineEntries1.add(new Entry(16, 1));
+        lineEntries1.add(new Entry(17, 1));
+        lineEntries1.add(new Entry(18, 1));
+        lineEntries1.add(new Entry(19, 2));
+        lineEntries1.add(new Entry(20, 2));
+        lineEntries1.add(new Entry(21, 3));
+        lineEntries1.add(new Entry(22, 4));
+
+        lineEntries2 = new ArrayList<>();
+        lineEntries2.add(new Entry(0, 4));
+        lineEntries2.add(new Entry(1, 4));
+        lineEntries2.add(new Entry(2, 3));
+        lineEntries2.add(new Entry(3, 3));
+        lineEntries2.add(new Entry(4, 3));
+        lineEntries2.add(new Entry(5, 2));
+        lineEntries2.add(new Entry(6, 2));
+        lineEntries2.add(new Entry(7, 2));
+        lineEntries2.add(new Entry(8, 1));
+        lineEntries2.add(new Entry(9, 1));
+        lineEntries2.add(new Entry(10, 1));
+        lineEntries2.add(new Entry(11, 1));
+        lineEntries2.add(new Entry(12, 2));
+        lineEntries2.add(new Entry(13, 2));
+        lineEntries2.add(new Entry(14, 3));
+        lineEntries2.add(new Entry(15, 3));
+        lineEntries2.add(new Entry(16, 3));
+        lineEntries2.add(new Entry(17, 2));
+        lineEntries2.add(new Entry(18, 2));
+        lineEntries2.add(new Entry(19, 2));
+        lineEntries2.add(new Entry(20, 3));
+        lineEntries2.add(new Entry(21, 4));
+        lineEntries2.add(new Entry(22, 4));
+
+    }
+
     private void setupLineGraph() {
         sleepLineChart = (LineChart) findViewById(R.id.linegraph_sleep);
+        lineDataSet1 = new LineDataSet(lineEntries1, "");
+        lineDataSet2 = new LineDataSet(lineEntries2,"");
+        lineData1 = new LineData(lineDataSet1);
+        lineData2 = new LineData(lineDataSet2);
+        sleepLineChart.setData(lineData1);
 
-        List<Entry> entries_awake = new ArrayList<>();
-        entries_awake.add(new Entry(00, 132));
-        entries_awake.add(new Entry(01, 131));
-        entries_awake.add(new Entry(02, 123));
-        entries_awake.add(new Entry(03, 131));
-        entries_awake.add(new Entry(04, 121));
-        entries_awake.add(new Entry(05, 143));
-        entries_awake.add(new Entry(06, 138));
-        entries_awake.add(new Entry(07, 135));
-        LineDataSet lineSet_awake = new LineDataSet(entries_awake, "Awake");
-        lineSet_awake.setColor(getResources().getColor(R.color.sleep_awake));
-        lineSet_awake.setLineWidth(5);
 
-        List<Entry> entries_rem = new ArrayList<>();
-        entries_rem.add(new Entry(00, 71));
-        entries_rem.add(new Entry(01, 77));
-        entries_rem.add(new Entry(02, 67));
-        entries_rem.add(new Entry(03, 81));
-        entries_rem.add(new Entry(04, 71));
-        entries_rem.add(new Entry(05, 74));
-        entries_rem.add(new Entry(06, 78));
-        entries_rem.add(new Entry(07, 72));
-        LineDataSet lineSet_rem = new LineDataSet(entries_rem, "REM");
-        lineSet_rem.setColor(getResources().getColor(R.color.sleep_rem));
-        lineSet_rem.setLineWidth(5);
+        // Set style on graph bg
+        sleepLineChart.getAxisLeft().setDrawGridLines(false);
+        sleepLineChart.getAxisRight().setDrawGridLines(false);
+        sleepLineChart.getXAxis().setDrawGridLines(false);
+        sleepLineChart.setDrawGridBackground(false);
+        sleepLineChart.setDrawBorders(false);
+        Description description = new Description();
+        description.setText("");
+        sleepLineChart.setDescription(description);
+        Legend legend = sleepLineChart.getLegend();
+        legend.setEnabled(false);
 
-        List<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineSet_awake);
-        dataSets.add(lineSet_rem);
+        // Y-axis
+        YAxis yAxisLeft = sleepLineChart.getAxisLeft();
+        YAxis yAxisRight = sleepLineChart.getAxisRight();
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setAxisMaximum(5f);
+        yAxisLeft.setGranularity(1f);
+        yAxisLeft.setValueFormatter(new SleepValueFormatter());
+        yAxisRight.setAxisMinimum(0f);
+        yAxisRight.setAxisMaximum(5f);
+        yAxisRight.setGranularity(1f);
+        yAxisRight.setValueFormatter(new SleepValueFormatter());
 
-        LineData lineData = new LineData(dataSets);
+        // X-axis
+        XAxis xAxis = sleepLineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(2,true);
+        xAxis.setValueFormatter(new SleepXAxisValueFormatter());
+        LineData lineData = new LineData(lineDataSet1);
         sleepLineChart.setData(lineData);
+
+        //Highlighter
+        lineDataSet1.setHighlightEnabled(false);
+
+        // Zoom disabled
+        sleepLineChart.setScaleEnabled(false);
+
+        // Style of line
+        lineDataSet1.setLineWidth(10);
+        lineDataSet1.setDrawCircles(false);
+        lineDataSet1.setDrawValues(false);
+        lineDataSet1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lineDataSet2.setLineWidth(10);
+        lineDataSet2.setDrawCircles(false);
+        lineDataSet2.setDrawValues(false);
+        lineDataSet2.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+
+        //Limitlines
+        LimitLine line1 = new LimitLine(1.5f);
+        line1.enableDashedLine(20f,20f,0f);
+        line1.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        yAxisLeft.addLimitLine(line1);
+
+        LimitLine line2 = new LimitLine(2.5f);
+        line2.enableDashedLine(20f,20f,0f);
+        line2.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        yAxisLeft.addLimitLine(line2);
+
+        LimitLine line3 = new LimitLine(3.5f);
+        line3.enableDashedLine(20f,20f,0f);
+        line3.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        yAxisLeft.addLimitLine(line3);
+
+
+
+    }
+
+    private void setupBarEntries() {
+     /*
+        List<BarEntry> barEntriesAwake = new ArrayList<>();
+        barEntriesAwake.add(new BarEntry(1, 10f));
+        barEntriesAwake.add(new BarEntry(2, 12f));
+        barEntriesAwake.add(new BarEntry(3, 15f));
+        barEntriesAwake.add(new BarEntry(4, 3f));
+        barEntriesAwake.add(new BarEntry(5, 17f));
+        barEntriesAwake.add(new BarEntry(6, 13f));
+        barEntriesAwake.add(new BarEntry(7, 11f));
+
+        List<BarEntry> barEntriesREM = new ArrayList<>();
+        barEntriesREM.add(new BarEntry(1, 14f));
+        barEntriesREM.add(new BarEntry(2, 11f));
+        barEntriesREM.add(new BarEntry(3, 17f));
+        barEntriesREM.add(new BarEntry(4, 13f));
+        barEntriesREM.add(new BarEntry(5, 19f));
+        barEntriesREM.add(new BarEntry(6, 12f));
+        barEntriesREM.add(new BarEntry(7, 14f));
+
+        List<BarEntry> barEntriesLight = new ArrayList<>();
+        barEntriesLight.add(new BarEntry(1,32f));
+        barEntriesLight.add(new BarEntry(2,37f));
+        barEntriesLight.add(new BarEntry(3,33f));
+        barEntriesLight.add(new BarEntry(4,28f));
+        barEntriesLight.add(new BarEntry(5,41f));
+        barEntriesLight.add(new BarEntry(6,39f));
+        barEntriesLight.add(new BarEntry(7,33f));
+
+        List<BarEntry> barEntriesDeep = new ArrayList<>();
+        barEntriesDeep.add(new BarEntry(1,44f));
+        barEntriesDeep.add(new BarEntry(2,40f));
+        barEntriesDeep.add(new BarEntry(3,35f));
+        barEntriesDeep.add(new BarEntry(4,56f));
+        barEntriesDeep.add(new BarEntry(5,23f));
+        barEntriesDeep.add(new BarEntry(6,24f));
+        barEntriesDeep.add(new BarEntry(7,42f));*/
+
+        barEntries = new ArrayList<>();
+        barEntries.add(new BarEntry(1,new float[]{.46f,2.45f,1.97f,2.87f}));
+        barEntries.add(new BarEntry(2,new float[]{.49f,.56f,3.23f,3.87f}));
+        barEntries.add(new BarEntry(3,new float[]{.65f,.74f,3.12f,4.21f}));
+        barEntries.add(new BarEntry(4,new float[]{.12f,1.2f,2.43f,2.67f}));
+        barEntries.add(new BarEntry(5,new float[]{.72f,.98f,2.69f,1.98f}));
+        barEntries.add(new BarEntry(6,new float[]{.48f,.30f,3.19f,2.87f}));
+        barEntries.add(new BarEntry(7,new float[]{.39f,.93f,3.78f,3.83f}));
     }
 
     private void setupBarGraph() {
         sleepBarChart = (BarChart) findViewById(R.id.bargraph_sleep);
-        List<BarEntry> entries = new ArrayList<>();
-
-        entries.add(new BarEntry(01, new float[]{71,132}));
-        entries.add(new BarEntry(02, new float[]{77,131}));
-        entries.add(new BarEntry(03, new float[]{81,123}));
-        entries.add(new BarEntry(04, new float[]{71,131}));
-        entries.add(new BarEntry(05, new float[]{74,121}));
-        entries.add(new BarEntry(06, new float[]{78,138}));
-        entries.add(new BarEntry(07, new float[]{72,135}));
-
-        BarDataSet dataSet = new BarDataSet(entries, "BP");
-        dataSet.setColors(getResources().getColor(R.color.sleep_rem), getResources().getColor(R.color.sleep_awake));
-        BarData data = new BarData(dataSet);
+        barDataSet = new BarDataSet(barEntries, "");
+        barDataSet.setColors(deepColor,lightColor,remColor,awakeColor);
+        data = new BarData(barDataSet);
         sleepBarChart.setData(data);
+
+        // Set style on graph bg
+        sleepBarChart.getAxisLeft().setDrawGridLines(false);
+        sleepBarChart.getAxisRight().setDrawGridLines(false);
+        sleepBarChart.getXAxis().setDrawGridLines(false);
+        sleepBarChart.setDrawGridBackground(false);
+        sleepBarChart.setDrawBorders(false);
+        sleepBarChart.setDrawValueAboveBar(false);
+        Description description = new Description();
+        description.setText("");
+        sleepBarChart.setDescription(description);
+        barDataSet.setDrawValues(false);
+        Legend legend = sleepBarChart.getLegend();
+        legend.setEnabled(false);
+        sleepBarChart.setScaleEnabled(false);
+        sleepBarChart.setHighlightFullBarEnabled(true);
+
+        //Highlight
+        barDataSet.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        barDataSet.setHighLightAlpha(150);
+        sleepBarChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                switchSet();
+                BarEntry b = (BarEntry) e;
+                int color = getResources().getColor(R.color.highlighter2);
+                totalNbr.setText(getInTime(b.getPositiveSum()));
+                awakeNbr.setText(getInTime(b.getYVals()[0]));
+                remNbr.setText(getInTime(b.getYVals()[1]));
+                lightNbr.setText(getInTime(b.getYVals()[2]));
+                deepNbr.setText(getInTime(b.getYVals()[3]));
+
+                totalNbr.setTextColor(color);
+                awakeNbr.setTextColor(color);
+                remNbr.setTextColor(color);
+                lightNbr.setTextColor(color);
+                deepNbr.setTextColor(color);
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+                switchSet();
+                int color = getResources().getColor(R.color.default_gray);
+                totalNbr.setText(currentTotalSlept);
+                awakeNbr.setText(currentAwake);
+                remNbr.setText(currentRem);
+                lightNbr.setText(currentLight);
+                deepNbr.setText(currentDeep);
+
+                totalNbr.setTextColor(color);
+                awakeNbr.setTextColor(color);
+                remNbr.setTextColor(color);
+                lightNbr.setTextColor(color);
+                deepNbr.setTextColor(color);
+            }
+        });
+
+        YAxis yAxisLeft = sleepBarChart.getAxisLeft();
+        YAxis yAxisRight = sleepBarChart.getAxisRight();
+        float max = barDataSet.getYMax() + 1;
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setAxisMaximum(round(max));
+        yAxisLeft.setValueFormatter(new HourAxisFormatter());
+
+        yAxisRight.setAxisMinimum(0f);
+        yAxisRight.setAxisMaximum(round(max));
+        yAxisRight.setValueFormatter(new HourAxisFormatter());
+
+        XAxis xAxis = sleepBarChart.getXAxis();
+        xAxis.setValueFormatter(new DayValueFormatter());
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     }
 
+    private void switchSet() {
+        if (firstSet) {
+            firstSet = false;
+            sleepLineChart.setData(lineData2);
+            sleepLineChart.invalidate();
+
+        } else {
+            firstSet = true;
+            sleepLineChart.setData(lineData1);
+            sleepLineChart.invalidate();
+        }
+    }
+    private String getInTime(float value) {
+
+        DecimalFormat formatter = new DecimalFormat("00");
+        int hours = (int) value;
+        int minutes = (int) (value * 60) % 60;
+        String hoursString = formatter.format(hours);
+        String minutesString = formatter.format(minutes);
+
+        return hoursString + ":" + minutesString;
+
+    }
+}
 
 
 
+class SleepValueFormatter implements IAxisValueFormatter {
+
+    String[] states;
+
+    public SleepValueFormatter() {
+        states = new String[]{"", "Deep", "Light", "REM", "Awake",""};
+    }
+
+    @Override
+    public String getFormattedValue(float value, AxisBase axis) {
+
+        return states[(int) value];
+    }
+}
+
+class HourAxisFormatter implements IAxisValueFormatter {
+
+    DecimalFormat formatter;
+    public HourAxisFormatter() {
+        formatter = new DecimalFormat("00");
+    }
+    @Override
+    public String getFormattedValue(float value, AxisBase axis) {
+
+        int hours = (int) value;
+        int minutes = (int) (value * 60) % 60;
+        String hoursString = formatter.format(hours);
+        String minutesString = formatter.format(minutes);
+        //return hoursString + ":" + minutesString;
+        return Integer.toString(hours) + "h";
+    }
+}
+
+class SleepXAxisValueFormatter implements IAxisValueFormatter {
+    boolean first;
+    public SleepXAxisValueFormatter() {
+        first = true;
+    }
+
+    public String getFormattedValue(float value, AxisBase axis) {
+        if (value == 0f) {
+            return "22:38";
+        }
+        return "06:29";
+    }
 
 }

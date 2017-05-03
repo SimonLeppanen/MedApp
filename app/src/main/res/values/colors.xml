@@ -8,22 +8,24 @@
     <color name="colorAccent">#428ff4</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="BPsyst">#f4a742</color>
-    <color name="BPdiast">#428ff4</color>
+    <color name="BPsyst">#ffc06d</color>
+    <color name="BPdiast">#7cb4ff</color>
 
-    <color name="temperature_normal">#7fccff</color>
+    <color name="temperature_normal">#7cb4ff</color>
     <color name="temperature_fever">#BB342F</color>
 
     <color name="heart_rest">#7fccff</color>
-    <color name="heart_fatburn">#3156c4</color>
+    <color name="heart_fatburn">#3b6fce</color>
     <color name="heart_cardio">#980cf5</color>
     <color name="heart_peak">#ff70b0</color>
-    <color name="highlighter">#ff6e00</color>
+
+    <color name="highlighter1">#ff6e00</color>
+    <color name="highlighter2">#3156c4</color>
     <color name="default_gray">#737373</color>
 
     <color name="sleep_awake">#BB342F</color>
     <color name="sleep_rem">#f441e5</color>
-    <color name="sleep_light">#428ff4</color>
+    <color name="sleep_light">#7fccff</color>
     <color name="sleep_deep">#4441f4</color>
     <color name="addbuttonbackground">#67cd7f</color>
 

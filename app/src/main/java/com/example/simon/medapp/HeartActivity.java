@@ -1,14 +1,16 @@
 package com.example.simon.medapp;
 
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -20,7 +22,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.utils.Transformer;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 
@@ -29,6 +32,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static android.R.attr.textStyle;
+import static android.graphics.Typeface.BOLD;
+import static com.example.simon.medapp.R.color.default_gray;
+import static com.example.simon.medapp.R.color.highlighter1;
+import static com.example.simon.medapp.R.color.highlighter2;
 import static java.lang.Math.abs;
 
 
@@ -54,7 +62,10 @@ public class HeartActivity extends AppCompatActivity {
     private double cardioLimit;
     private double peakLimit;
 
-
+    private TextView pulseNbr;
+    private TextView pulseText;
+    private int currentPulse;
+    private int origTextColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +73,9 @@ public class HeartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_heart);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.colorCardHeader)));
-
+        TableLayout t = (TableLayout) findViewById(R.id.heart_table);
+        t.setVisibility(View.INVISIBLE);
+        currentPulse = 67;
         //Runs graph to be able to create layout
         findViewById(R.id.graph_heart).post(new Runnable() {
             @Override
@@ -96,14 +109,33 @@ public class HeartActivity extends AppCompatActivity {
 
     private void setupEntries() {
         entries = new ArrayList<>();
-        entries.add(new Entry(00, 46));
-        entries.add(new Entry(01, 92));
-        entries.add(new Entry(02, 149));
-        entries.add(new Entry(03, 187));
-        entries.add(new Entry(04, 89));
-        entries.add(new Entry(05, 98));
-        entries.add(new Entry(06, 102));
-        entries.add(new Entry(07, 120));
+        entries.add(new Entry(0, 46));
+        entries.add(new Entry(1, 92));
+        entries.add(new Entry(2, 149));
+        entries.add(new Entry(3, 187));
+        entries.add(new Entry(4, 89));
+        entries.add(new Entry(5, 98));
+        entries.add(new Entry(6, 102));
+        entries.add(new Entry(7, 120));
+        entries.add(new Entry(8, 46));
+        entries.add(new Entry(9, 92));
+        entries.add(new Entry(10, 102));
+        entries.add(new Entry(11, 121));
+        entries.add(new Entry(12, 142));
+        entries.add(new Entry(13, 157));
+        entries.add(new Entry(14, 175));
+        entries.add(new Entry(15, 143));
+        entries.add(new Entry(16, 102));
+        entries.add(new Entry(17, 74));
+        entries.add(new Entry(18, 65));
+        entries.add(new Entry(19, 54));
+        entries.add(new Entry(20, 67));
+        entries.add(new Entry(21, 76));
+        entries.add(new Entry(22, 178));
+        entries.add(new Entry(23, 68));
+        entries.add(new Entry(24, 72));
+
+
 
         minValue = 46;
         maxValue = 172;
@@ -130,19 +162,10 @@ public class HeartActivity extends AppCompatActivity {
         int cardioColor = ContextCompat.getColor(this,R.color.heart_cardio);
         int fatburnColor = ContextCompat.getColor(this,R.color.heart_fatburn);
         int restColor = ContextCompat.getColor(this,R.color.heart_rest);
-        float margin = 0;
-
-
-
-
-        Log.d("Top: ", Float.toString(v.contentTop()));
-        Log.d("Bottom: ", Float.toString(v.contentBottom()));
-        Log.d("viewHeight: : ", Float.toString(viewHeight));
-        Log.d("chartHeight: ", Float.toString(chartHeight));
-
+        float margin = .075f;
 
         int[] gradColors = {peakColor, peakColor,cardioColor,cardioColor,fatburnColor,fatburnColor,restColor,restColor};
-        float[] positions = {0f,.15f,.15f,.3f,.3f,.5f,.5f,1f};
+        float[] positions = {0f,.15f-margin,.15f+margin,.3f-margin,.3f+margin,.5f-margin,.5f+margin,1f};
         Paint paint = heartChart.getRenderer().getPaintRender();
         LinearGradient linGrad = new LinearGradient(0f, y0, 0f, y1,
                 gradColors,
@@ -184,13 +207,47 @@ public class HeartActivity extends AppCompatActivity {
         yAxisLeft.setAxisMinimum(0f);
         yAxisLeft.setAxisMaximum((float) maxPulse);
 
+        YAxis yAxisRight = heartChart.getAxisRight();
+        yAxisRight.setDrawLabels(false);
+
         // X-axis
         XAxis xAxis = heartChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
 
-        //Highlighter
-        heartSet.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter));
+        //Highlighter&listener
+        heartSet.setHighLightColor(ContextCompat.getColor(this, highlighter1));
+        heartSet.setHighlightLineWidth(3f);
+        heartSet.setDrawHorizontalHighlightIndicator(false);
+        heartChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int highlighter1 = getResources().getColor(R.color.highlighter1);
+                pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
+                pulseNbr.setText(Integer.toString(Math.round(e.getY())));
+                pulseNbr.setTextColor(highlighter1);
+
+                pulseText = (TextView) findViewById(R.id.pulse_txt);
+                pulseText.setText("CURSOR");
+                pulseText.setTextColor(highlighter1);
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+                pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
+                pulseText = (TextView) findViewById(R.id.pulse_txt);
+
+                int default_gray = getResources().getColor(R.color.default_gray);
+
+                pulseNbr.setTextColor(default_gray);
+                pulseNbr.setText(Integer.toString(currentPulse));
+
+                pulseText.setTextColor(default_gray);
+                pulseText.setText("PULSE");
+
+            }
+        });
 
         // Zoom disabled
         heartChart.setScaleEnabled(false);
@@ -210,6 +267,37 @@ public class HeartActivity extends AppCompatActivity {
         line3.enableDashedLine(20f,20f,0f);
         line3.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
         yAxisLeft.addLimitLine(line3);
+
+
+        float text1pos = (float) (fatburnLimit/2)-5;
+        LimitLine text1 = new LimitLine(text1pos,"Rest");
+        text1.setTextColor(ContextCompat.getColor(this,R.color.heart_rest));
+        text1.setTextSize(14f);
+        text1.setLineColor(ContextCompat.getColor(this,R.color.transparent));
+        yAxisLeft.addLimitLine(text1);
+
+        float text2pos = (float) (((cardioLimit-fatburnLimit)/2)+fatburnLimit-5);
+        LimitLine text2 = new LimitLine(text2pos,"Fatburn");
+        text2.setTextColor(ContextCompat.getColor(this,R.color.heart_fatburn));
+        text2.setTextSize(14f);
+        text2.setLineColor(ContextCompat.getColor(this,R.color.transparent));
+        yAxisLeft.addLimitLine(text2);
+
+        float text3pos = (float) (((peakLimit-cardioLimit)/2)+cardioLimit-5);
+        LimitLine text3 = new LimitLine(text3pos,"Cardio");
+        text3.setTextColor(ContextCompat.getColor(this,R.color.heart_cardio));
+        text3.setTextSize(14f);
+        text3.setLineColor(ContextCompat.getColor(this,R.color.transparent));
+        text3.setTextStyle(Paint.Style.FILL);
+        yAxisLeft.addLimitLine(text3);
+
+        float text4pos = (float) (((maxPulse-peakLimit)/2)+peakLimit-5);
+        LimitLine text4 = new LimitLine(text4pos,"Peak");
+        text4.setTextColor(ContextCompat.getColor(this,R.color.heart_peak));
+        text4.setTextSize(14f);
+        text4.setLineColor(ContextCompat.getColor(this,R.color.transparent));
+        yAxisLeft.addLimitLine(text4);
+
 
         // Style of line
         heartSet.setLineWidth(5);
