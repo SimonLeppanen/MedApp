@@ -3,13 +3,12 @@ package com.example.simon.medapp;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -29,14 +28,9 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import static android.R.attr.textStyle;
-import static android.graphics.Typeface.BOLD;
-import static com.example.simon.medapp.R.color.default_gray;
 import static com.example.simon.medapp.R.color.highlighter1;
-import static com.example.simon.medapp.R.color.highlighter2;
 import static java.lang.Math.abs;
 
 
@@ -47,10 +41,20 @@ import static java.lang.Math.abs;
 
 public class HeartActivity extends AppCompatActivity {
 
-    private List<Entry> entries;
+    private List<Entry> entries1;
+    private List<Entry> entries2;
     private LineChart heartChart;
-    private Date date;
-    private Calendar calendar;
+    private Calendar activeDate;
+    private Calendar today;
+    LineDataSet heartSet1;
+    LineDataSet heartSet2;
+    LineData lineData1;
+    LineData lineData2;
+
+    int peakColor;
+    int cardioColor;
+    int fatburnColor;
+    int restColor;
 
     private double minValue;
     private double maxValue;
@@ -64,8 +68,13 @@ public class HeartActivity extends AppCompatActivity {
 
     private TextView pulseNbr;
     private TextView pulseText;
+    private TextView heartZone;
+    private TextView restNbr;
+    private TextView hrvNbr;
     private int currentPulse;
     private int origTextColor;
+
+    private boolean firstSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,18 +94,22 @@ public class HeartActivity extends AppCompatActivity {
             }
         });
 
-        setTodaysDate();
+        restNbr = (TextView) findViewById(R.id.rest_nbr);
+        hrvNbr = (TextView) findViewById(R.id.hrv_nbr);
+        firstSet = true;
+        activeDate = Calendar.getInstance();
+        today = Calendar.getInstance();
+        setDateInActivity(today);
         drawGraph();
 
     }
 
-    private void setTodaysDate() {
+    private void setDateInActivity(Calendar calendar) {
         // NOT FINISHED!
-        date = new Date();
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(Methods.getDay(date));
-        dateBox.setText(Methods.getDate(date));
+        dayBox.setText(Methods.getDay(calendar));
+        dateBox.setText(Methods.getDate(calendar));
     }
 
     public void drawGraph() {
@@ -108,34 +121,59 @@ public class HeartActivity extends AppCompatActivity {
     }
 
     private void setupEntries() {
-        entries = new ArrayList<>();
-        entries.add(new Entry(0, 46));
-        entries.add(new Entry(1, 92));
-        entries.add(new Entry(2, 149));
-        entries.add(new Entry(3, 187));
-        entries.add(new Entry(4, 89));
-        entries.add(new Entry(5, 98));
-        entries.add(new Entry(6, 102));
-        entries.add(new Entry(7, 120));
-        entries.add(new Entry(8, 46));
-        entries.add(new Entry(9, 92));
-        entries.add(new Entry(10, 102));
-        entries.add(new Entry(11, 121));
-        entries.add(new Entry(12, 142));
-        entries.add(new Entry(13, 157));
-        entries.add(new Entry(14, 175));
-        entries.add(new Entry(15, 143));
-        entries.add(new Entry(16, 102));
-        entries.add(new Entry(17, 74));
-        entries.add(new Entry(18, 65));
-        entries.add(new Entry(19, 54));
-        entries.add(new Entry(20, 67));
-        entries.add(new Entry(21, 76));
-        entries.add(new Entry(22, 178));
-        entries.add(new Entry(23, 68));
-        entries.add(new Entry(24, 72));
+        entries1 = new ArrayList<>();
+        entries1.add(new Entry(0, 46));
+        entries1.add(new Entry(1, 92));
+        entries1.add(new Entry(2, 149));
+        entries1.add(new Entry(3, 187));
+        entries1.add(new Entry(4, 89));
+        entries1.add(new Entry(5, 98));
+        entries1.add(new Entry(6, 102));
+        entries1.add(new Entry(7, 120));
+        entries1.add(new Entry(8, 46));
+        entries1.add(new Entry(9, 92));
+        entries1.add(new Entry(10, 102));
+        entries1.add(new Entry(11, 121));
+        entries1.add(new Entry(12, 142));
+        entries1.add(new Entry(13, 157));
+        entries1.add(new Entry(14, 175));
+        entries1.add(new Entry(15, 143));
+        entries1.add(new Entry(16, 102));
+        entries1.add(new Entry(17, 74));
+        entries1.add(new Entry(18, 65));
+        entries1.add(new Entry(19, 54));
+        entries1.add(new Entry(20, 67));
+        entries1.add(new Entry(21, 76));
+        entries1.add(new Entry(22, 178));
+        entries1.add(new Entry(23, 68));
+        entries1.add(new Entry(24, 72));
 
-
+        entries2 = new ArrayList<>();
+        entries2.add(new Entry(0, 56));
+        entries2.add(new Entry(1, 91));
+        entries2.add(new Entry(2, 129));
+        entries2.add(new Entry(3, 167));
+        entries2.add(new Entry(4, 84));
+        entries2.add(new Entry(5, 93));
+        entries2.add(new Entry(6, 132));
+        entries2.add(new Entry(7, 140));
+        entries2.add(new Entry(8, 146));
+        entries2.add(new Entry(9, 152));
+        entries2.add(new Entry(10, 142));
+        entries2.add(new Entry(11, 121));
+        entries2.add(new Entry(12, 142));
+        entries2.add(new Entry(13, 137));
+        entries2.add(new Entry(14, 165));
+        entries2.add(new Entry(15, 153));
+        entries2.add(new Entry(16, 132));
+        entries2.add(new Entry(17, 75));
+        entries2.add(new Entry(18, 63));
+        entries2.add(new Entry(19, 55));
+        entries2.add(new Entry(20, 68));
+        entries2.add(new Entry(21, 75));
+        entries2.add(new Entry(22, 148));
+        entries2.add(new Entry(23, 65));
+        entries2.add(new Entry(24, 74));
 
         minValue = 46;
         maxValue = 172;
@@ -158,10 +196,10 @@ public class HeartActivity extends AppCompatActivity {
         float y0 = v.contentTop();
         float y1 = v.contentBottom();
 
-        int peakColor = ContextCompat.getColor(this,R.color.heart_peak);
-        int cardioColor = ContextCompat.getColor(this,R.color.heart_cardio);
-        int fatburnColor = ContextCompat.getColor(this,R.color.heart_fatburn);
-        int restColor = ContextCompat.getColor(this,R.color.heart_rest);
+        peakColor = ContextCompat.getColor(this,R.color.heart_peak);
+        cardioColor = ContextCompat.getColor(this,R.color.heart_cardio);
+        fatburnColor = ContextCompat.getColor(this,R.color.heart_fatburn);
+        restColor = ContextCompat.getColor(this,R.color.heart_rest);
         float margin = .075f;
 
         int[] gradColors = {peakColor, peakColor,cardioColor,cardioColor,fatburnColor,fatburnColor,restColor,restColor};
@@ -186,8 +224,10 @@ public class HeartActivity extends AppCompatActivity {
         peakLimit = .85 * maxPulse;
 
         // Setup DataSet, LineData, LineChart
-        LineDataSet heartSet = new LineDataSet(entries, "Pulse");
-        LineData lineData = new LineData(heartSet);
+        heartSet1 = new LineDataSet(entries1, "Pulse");
+        heartSet2 = new LineDataSet(entries2, "Pulse");
+        lineData1 = new LineData(heartSet1);
+        lineData2 = new LineData(heartSet2);
         heartChart = (LineChart) findViewById(R.id.graph_heart);
 
         // Set style on graph bg
@@ -216,13 +256,35 @@ public class HeartActivity extends AppCompatActivity {
 
 
         //Highlighter&listener
-        heartSet.setHighLightColor(ContextCompat.getColor(this, highlighter1));
-        heartSet.setHighlightLineWidth(3f);
-        heartSet.setDrawHorizontalHighlightIndicator(false);
+        heartSet1.setHighLightColor(ContextCompat.getColor(this, highlighter1));
+        heartSet1.setHighlightLineWidth(3f);
+        heartSet1.setDrawHorizontalHighlightIndicator(false);
+
+        heartSet2.setHighLightColor(ContextCompat.getColor(this, highlighter1));
+        heartSet2.setHighlightLineWidth(3f);
+        heartSet2.setDrawHorizontalHighlightIndicator(false);
+
         heartChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 int highlighter1 = getResources().getColor(R.color.highlighter1);
+                heartZone = (TextView) findViewById(R.id.heartZone);
+                int pulse = (int) h.getY();
+
+                if (pulse < fatburnLimit) {
+                    heartZone.setText("RESTING");
+                }
+                else if (pulse >= fatburnLimit && pulse < cardioLimit) {
+                    heartZone.setText("FATBURN");
+                }
+                else if (pulse >= cardioLimit && pulse < peakLimit) {
+                    heartZone.setText("CARDIO");
+                }
+                else if (pulse >= peakLimit) {
+                    heartZone.setText("PEAK");
+                }
+
+
                 pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
                 pulseNbr.setText(Integer.toString(Math.round(e.getY())));
                 pulseNbr.setTextColor(highlighter1);
@@ -300,13 +362,66 @@ public class HeartActivity extends AppCompatActivity {
 
 
         // Style of line
-        heartSet.setLineWidth(5);
-        heartSet.setDrawCircles(false);
-        heartSet.setDrawValues(false);
-        heartSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        heartSet1.setLineWidth(5);
+        heartSet1.setDrawCircles(false);
+        heartSet1.setDrawValues(false);
+        heartSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        heartSet2.setLineWidth(5);
+        heartSet2.setDrawCircles(false);
+        heartSet2.setDrawValues(false);
+        heartSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
         // Initiate graph
-        heartChart.setData(lineData);
+        heartChart.setData(lineData1);
+    }
+
+    private void switchSet() {
+        if (firstSet) {
+            firstSet = false;
+            heartChart.setData(lineData2);
+            heartChart.invalidate();
+            restNbr.setText("54");
+            hrvNbr.setText("52");
+        } else {
+            firstSet = true;
+            heartChart.setData(lineData1);
+            heartChart.invalidate();
+            restNbr.setText("52");
+            hrvNbr.setText("50");
+        }
+
+    }
+
+    public void dateChange(View view) {
+
+        if (view == findViewById(R.id.heart_dateBackButton)) {
+            activeDate.add(Calendar.DATE,-1);
+            setDateInActivity(activeDate);
+            switchSet();
+        }
+        if (view == findViewById(R.id.heart_dateForwardButton)) {
+            if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                activeDate.add(Calendar.DATE, +1);
+                setDateInActivity(activeDate);
+                switchSet();
+            }
+        }
+
+    }
+
+    public void pulseNbrClicked(View view) {
+        heartChart.highlightValues(null);
+        pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
+        pulseText = (TextView) findViewById(R.id.pulse_txt);
+
+        int default_gray = getResources().getColor(R.color.default_gray);
+
+        pulseNbr.setTextColor(default_gray);
+        pulseNbr.setText(Integer.toString(currentPulse));
+
+        pulseText.setTextColor(default_gray);
+        pulseText.setText("PULSE");
     }
 }
 

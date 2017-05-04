@@ -1,8 +1,10 @@
 package com.example.simon.medapp;
 
+import android.text.format.DateUtils;
 import android.view.View;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,9 +18,13 @@ public class Methods {
      * @param d: date-object
      * @return String for day of the week fully written out, ex. Friday
      */
-    public static String getDay(Date d) {
+    public static String getDay(Calendar d) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
-        return dateFormat.format(d);
+        if (DateUtils.isToday(d.getTimeInMillis())) {
+            return "Today";
+        } else {
+            return dateFormat.format(d.getTime());
+        }
     }
 
     /**
@@ -34,9 +40,9 @@ public class Methods {
      * @param d: date-object
      * @return String for month and day, ex. September, 25
      */
-    public static String getDate(Date d) {
+    public static String getDate(Calendar d) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM, d");
-        return dateFormat.format(d);
+        return dateFormat.format(d.getTime());
     }
 
 }

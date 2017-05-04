@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,11 +26,9 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -41,11 +40,13 @@ public class TemperatureActivity extends AppCompatActivity {
     float maxTemp = 42.5f;
     float fever = 37.5f;
     float minTemp = 32.5f;
-    private List <Entry> entries;
+    private List <Entry> entries1;
+    private List <Entry> entries2;
+
     private int feverColor;
     private int normalColor;
 
-    private Date date;
+
     private LineChart temperatureChart;
 
     private TextView temperatureNbr;
@@ -54,6 +55,12 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private String temperatureNbrOrig = "36,8";
     private String temperatureTextOrig = "NORMAL";
+    private Calendar activeDate;
+    private Calendar today;
+    private LineData lineData1;
+    private LineData lineData2;
+
+    private boolean firstSetActive;
 
 
     @Override
@@ -73,7 +80,11 @@ public class TemperatureActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.colorCardHeader)));
 
-        setTodaysDate();
+        activeDate = Calendar.getInstance();
+        today = Calendar.getInstance();
+        firstSetActive = true;
+
+        setDateInActivity(activeDate);
         getTextViews();
         drawGraph();
 
@@ -88,13 +99,41 @@ public class TemperatureActivity extends AppCompatActivity {
 
     }
 
-    private void setTodaysDate() {
-        // NOT FINISHED!
-        date = new Date();
+    private void setDateInActivity(Calendar calendar) {
+
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(getDay(date));
-        dateBox.setText(getDate(date));
+        dayBox.setText(getDay(calendar));
+        dateBox.setText(getDate(calendar));
+    }
+
+    public void dateChange(View view) {
+
+        if (view == findViewById(R.id.temp_dateBackButton)) {
+            activeDate.add(Calendar.DATE,-1);
+            setDateInActivity(activeDate);
+            switchSet();
+        }
+        if (view == findViewById(R.id.temp_dateForwardButton)) {
+            if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                activeDate.add(Calendar.DATE, +1);
+                setDateInActivity(activeDate);
+                switchSet();
+            }
+        }
+
+    }
+
+    private void switchSet() {
+        if (firstSetActive) {
+            firstSetActive = false;
+            temperatureChart.setData(lineData2);
+            temperatureChart.invalidate();
+        } else {
+            firstSetActive = true;
+            temperatureChart.setData(lineData1);
+            temperatureChart.invalidate();
+        }
     }
 
     public void drawGraph() {
@@ -106,33 +145,59 @@ public class TemperatureActivity extends AppCompatActivity {
     }
 
     private void setupEntries() {
-        entries = new ArrayList<>();
-        entries.add(new Entry(0, 36.1f));
-        entries.add(new Entry(1, 36.5f));
-        entries.add(new Entry(2, 36.9f));
-        entries.add(new Entry(3, 37.6f));
-        entries.add(new Entry(4, 38.3f));
-        entries.add(new Entry(5, 37.4f));
-        entries.add(new Entry(6, 37.1f));
-        entries.add(new Entry(7, 36.6f));
-        entries.add(new Entry(8, 36.2f));
-        entries.add(new Entry(9, 36.1f));
-        entries.add(new Entry(10, 35.8f));
-        entries.add(new Entry(11, 36.6f));
-        entries.add(new Entry(12, 36.4f));
-        entries.add(new Entry(13, 36.9f));
-        entries.add(new Entry(14, 37.1f));
-        entries.add(new Entry(15, 37.3f));
-        entries.add(new Entry(16, 37.5f));
-        entries.add(new Entry(17, 37.6f));
-        entries.add(new Entry(18, 38.6f));
-        entries.add(new Entry(19, 38.9f));
-        entries.add(new Entry(20, 39.1f));
-        entries.add(new Entry(21, 38.6f));
-        entries.add(new Entry(22, 36.9f));
-        entries.add(new Entry(23, 35.9f));
-        entries.add(new Entry(24, 35.5f));
+        entries1 = new ArrayList<>();
+        entries1.add(new Entry(0, 36.1f));
+        entries1.add(new Entry(1, 36.5f));
+        entries1.add(new Entry(2, 36.9f));
+        entries1.add(new Entry(3, 37.6f));
+        entries1.add(new Entry(4, 38.3f));
+        entries1.add(new Entry(5, 37.4f));
+        entries1.add(new Entry(6, 37.1f));
+        entries1.add(new Entry(7, 36.6f));
+        entries1.add(new Entry(8, 36.2f));
+        entries1.add(new Entry(9, 36.1f));
+        entries1.add(new Entry(10, 35.8f));
+        entries1.add(new Entry(11, 36.6f));
+        entries1.add(new Entry(12, 36.4f));
+        entries1.add(new Entry(13, 36.9f));
+        entries1.add(new Entry(14, 37.1f));
+        entries1.add(new Entry(15, 37.3f));
+        entries1.add(new Entry(16, 37.5f));
+        entries1.add(new Entry(17, 37.6f));
+        entries1.add(new Entry(18, 38.6f));
+        entries1.add(new Entry(19, 38.9f));
+        entries1.add(new Entry(20, 39.1f));
+        entries1.add(new Entry(21, 38.6f));
+        entries1.add(new Entry(22, 36.9f));
+        entries1.add(new Entry(23, 35.9f));
+        entries1.add(new Entry(24, 35.5f));
 
+        entries2 = new ArrayList<>();
+        entries2.add(new Entry(0, 36.1f));
+        entries2.add(new Entry(1, 36.5f));
+        entries2.add(new Entry(2, 36.9f));
+        entries2.add(new Entry(3, 37.6f));
+        entries2.add(new Entry(4, 38.3f));
+        entries2.add(new Entry(5, 37.4f));
+        entries2.add(new Entry(6, 37.1f));
+        entries2.add(new Entry(7, 36.6f));
+        entries2.add(new Entry(8, 36.2f));
+        entries2.add(new Entry(9, 36.1f));
+        entries2.add(new Entry(10, 35.8f));
+        entries2.add(new Entry(11, 36.6f));
+        entries2.add(new Entry(12, 36.4f));
+        entries2.add(new Entry(13, 36.9f));
+        entries2.add(new Entry(14, 37.1f));
+        entries2.add(new Entry(15, 37.3f));
+        entries2.add(new Entry(16, 37.5f));
+        entries2.add(new Entry(17, 37.6f));
+        entries2.add(new Entry(18, 38.6f));
+        entries2.add(new Entry(19, 38.9f));
+        entries2.add(new Entry(20, 39.1f));
+        entries2.add(new Entry(21, 38.6f));
+        entries2.add(new Entry(22, 36.9f));
+        entries2.add(new Entry(23, 35.9f));
+        entries2.add(new Entry(24, 35.5f));
 
     }
 
@@ -172,9 +237,12 @@ public class TemperatureActivity extends AppCompatActivity {
      */
 
     private void setupGraph() {
-        LineDataSet temperatureSet = new LineDataSet(entries, "Pulse");
+        LineDataSet temperatureSet1 = new LineDataSet(entries1, "Pulse");
+        LineDataSet temperatureSet2 = new LineDataSet(entries2, "Pulse");
+
         temperatureChart = (LineChart) findViewById(R.id.graph_temperature);
-        temperatureSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        temperatureSet1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        temperatureSet2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
 
 
@@ -203,19 +271,27 @@ public class TemperatureActivity extends AppCompatActivity {
         //yAxisRight.setGranularity(1f);
 
 
-
-
         // X-axis
         XAxis xAxis = temperatureChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        temperatureSet.setLineWidth(10);
-        LineData lineData = new LineData(temperatureSet);
-        temperatureChart.setData(lineData);
+
+        temperatureSet1.setLineWidth(10);
+        temperatureSet2.setLineWidth(10);
+
+        lineData1 = new LineData(temperatureSet1);
+        lineData2 = new LineData(temperatureSet2);
+
+        temperatureChart.setData(lineData1);
 
         //Highlighter
-        temperatureSet.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
-        temperatureSet.setHighlightLineWidth(3f);
-        temperatureSet.setDrawHorizontalHighlightIndicator(false);
+        temperatureSet1.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        temperatureSet1.setHighlightLineWidth(3f);
+        temperatureSet1.setDrawHorizontalHighlightIndicator(false);
+
+        temperatureSet2.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        temperatureSet2.setHighlightLineWidth(3f);
+        temperatureSet2.setDrawHorizontalHighlightIndicator(false);
+
         temperatureChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -273,13 +349,13 @@ public class TemperatureActivity extends AppCompatActivity {
         yAxisLeft.addLimitLine(feverText);
 
         // Style of line
-        temperatureSet.setLineWidth(5);
-        temperatureSet.setDrawCircles(false);
-        temperatureSet.setDrawValues(false);
-        temperatureSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        temperatureSet1.setLineWidth(5);
+        temperatureSet1.setDrawCircles(false);
+        temperatureSet1.setDrawValues(false);
+        temperatureSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
         // Initiate graph
-        temperatureChart.setData(lineData);
+        temperatureChart.setData(lineData1);
     }
 
     public boolean isFever(Entry e) {
@@ -290,30 +366,25 @@ public class TemperatureActivity extends AppCompatActivity {
      * Changes date when arrows clicked in layout, NOT FINISHED
      * @param view id of arrow-button
      */
-    public void dateChange(View view) {
-        if (view == findViewById(R.id.dateBackButton)) {
-
-        }
-    }
 
     /**
      *
-     * @param d: date-object
+     * @param cal: calendar-object
      * @return String for day of the week fully written out, ex. Friday
      */
-    public String getDay(Date d) {
+    public String getDay(Calendar cal) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
-        return dateFormat.format(d);
+        return dateFormat.format(cal.getTime());
     }
 
     /**
      *
-     * @param d: date-object
+     * @param cal: date-object
      * @return String for month and day, ex. September, 25
      */
-    public String getDate(Date d) {
+    public String getDate(Calendar cal) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM, d");
-        return dateFormat.format(d);
+        return dateFormat.format(cal.getTime());
     }
 }
 

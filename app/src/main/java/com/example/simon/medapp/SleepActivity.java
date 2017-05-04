@@ -29,7 +29,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +78,7 @@ public class SleepActivity extends AppCompatActivity {
     private TextView deepNbr;
     private TextView deepText;
     private boolean firstSet;
+    private Calendar activeDate;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +120,11 @@ public class SleepActivity extends AppCompatActivity {
     }
     private void setTodaysDate() {
         // NOT FINISHED!
-        date = new Date();
+        activeDate = Calendar.getInstance();
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(Methods.getDay(date));
-        dateBox.setText(Methods.getDate(date));
+        dayBox.setText(Methods.getDay(activeDate));
+        dateBox.setText(Methods.getDate(activeDate));
     }
 
     private void drawSleepGraphs() {
@@ -421,8 +424,20 @@ public class SleepActivity extends AppCompatActivity {
         yAxisRight.setValueFormatter(new HourAxisFormatter());
 
         XAxis xAxis = sleepBarChart.getXAxis();
-        xAxis.setValueFormatter(new DayValueFormatter());
+        xAxis.setValueFormatter(new DayValueFormatter(getWeekDayArray()));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    }
+
+    private String[] getWeekDayArray() {
+        String[] days = new String[7];
+        Calendar today = Calendar.getInstance();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
+        today.add(Calendar.DATE, -7);
+        for (int i = 0; i < 7; i++) {
+            today.add(Calendar.DATE, +1);
+            days[i] = dayFormat.format(today.getTime()).toUpperCase();
+        }
+        return days;
     }
 
     private void switchSet() {
