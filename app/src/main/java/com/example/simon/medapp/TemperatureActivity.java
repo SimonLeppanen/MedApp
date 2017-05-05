@@ -173,31 +173,31 @@ public class TemperatureActivity extends AppCompatActivity {
         entries1.add(new Entry(24, 35.5f));
 
         entries2 = new ArrayList<>();
-        entries2.add(new Entry(0, 36.1f));
+        entries2.add(new Entry(0, 36.3f));
         entries2.add(new Entry(1, 36.5f));
-        entries2.add(new Entry(2, 36.9f));
-        entries2.add(new Entry(3, 37.6f));
-        entries2.add(new Entry(4, 38.3f));
-        entries2.add(new Entry(5, 37.4f));
-        entries2.add(new Entry(6, 37.1f));
+        entries2.add(new Entry(2, 36.7f));
+        entries2.add(new Entry(3, 37.0f));
+        entries2.add(new Entry(4, 38.1f));
+        entries2.add(new Entry(5, 37.8f));
+        entries2.add(new Entry(6, 36.1f));
         entries2.add(new Entry(7, 36.6f));
-        entries2.add(new Entry(8, 36.2f));
-        entries2.add(new Entry(9, 36.1f));
-        entries2.add(new Entry(10, 35.8f));
+        entries2.add(new Entry(8, 35.2f));
+        entries2.add(new Entry(9, 35.1f));
+        entries2.add(new Entry(10, 36.8f));
         entries2.add(new Entry(11, 36.6f));
         entries2.add(new Entry(12, 36.4f));
-        entries2.add(new Entry(13, 36.9f));
+        entries2.add(new Entry(13, 37.9f));
         entries2.add(new Entry(14, 37.1f));
-        entries2.add(new Entry(15, 37.3f));
-        entries2.add(new Entry(16, 37.5f));
-        entries2.add(new Entry(17, 37.6f));
-        entries2.add(new Entry(18, 38.6f));
+        entries2.add(new Entry(15, 38.3f));
+        entries2.add(new Entry(16, 39.5f));
+        entries2.add(new Entry(17, 40.6f));
+        entries2.add(new Entry(18, 39.6f));
         entries2.add(new Entry(19, 38.9f));
-        entries2.add(new Entry(20, 39.1f));
-        entries2.add(new Entry(21, 38.6f));
+        entries2.add(new Entry(20, 37.1f));
+        entries2.add(new Entry(21, 36.6f));
         entries2.add(new Entry(22, 36.9f));
-        entries2.add(new Entry(23, 35.9f));
-        entries2.add(new Entry(24, 35.5f));
+        entries2.add(new Entry(23, 37.9f));
+        entries2.add(new Entry(24, 37.8f));
 
     }
 
@@ -353,6 +353,11 @@ public class TemperatureActivity extends AppCompatActivity {
         temperatureSet1.setDrawCircles(false);
         temperatureSet1.setDrawValues(false);
         temperatureSet1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        temperatureSet2.setLineWidth(5);
+        temperatureSet2.setDrawCircles(false);
+        temperatureSet2.setDrawValues(false);
+        temperatureSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
         // Initiate graph
         temperatureChart.setData(lineData1);

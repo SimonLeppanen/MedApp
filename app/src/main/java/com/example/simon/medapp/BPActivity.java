@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -66,11 +67,18 @@ public class BPActivity extends AppCompatActivity {
     private BarDataSet barDataSet_syst;
     private BarDataSet barDataSet_diast;
 
-    private String avgSystOrig;
-    private String avgDiastOrig;
-    private String nowSystOrig;
-    private String nowDiastOrig;
-    private String nowTextOrig;
+    private String avgSystOrig1;
+    private String avgDiastOrig1;
+    private String nowSystOrig1;
+    private String nowDiastOrig1;
+    private String nowTextOrig1;
+
+    private String avgSystOrig2;
+    private String avgDiastOrig2;
+    private String nowSystOrig2;
+    private String nowDiastOrig2;
+    private String nowTextOrig2;
+
 
     private TextView avgSyst;
     private TextView avgDiast;
@@ -99,12 +107,16 @@ public class BPActivity extends AppCompatActivity {
             @Override
             public void run() {
                 setupLineEntries();
+                setupLineGraph();
+                bpLineChart.invalidate();
             }
         });
         findViewById(R.id.bargraph_bp).post(new Runnable() {
             @Override
             public void run() {
                 setupBarEntries();
+                setupBarGraph();
+                bpBarChart.invalidate();
             }
         });
         today = Calendar.getInstance();
@@ -117,11 +129,17 @@ public class BPActivity extends AppCompatActivity {
     }
 
     private void getTextViews() {
-        avgSystOrig = "135";
-        avgDiastOrig = "72";
-        nowSystOrig = "131";
-        nowDiastOrig = "71";
-        nowTextOrig = "NOW";
+        avgSystOrig1 = "135";
+        avgDiastOrig1 = "72";
+        nowSystOrig1 = "131";
+        nowDiastOrig1 = "71";
+        nowTextOrig1 = "NOW";
+        avgSystOrig2 = "132";
+        avgDiastOrig2 = "74";
+        nowSystOrig2 = "133";
+        nowDiastOrig2 = "72";
+        nowTextOrig2 = "NOW";
+
         barSelected = false;
         lineHighlightActive = false;
 
@@ -152,6 +170,19 @@ public class BPActivity extends AppCompatActivity {
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
         dayBox.setText(Methods.getDay(cal));
         dateBox.setText(Methods.getDate(cal));
+        if (bpLineChart != null) {
+            bpLineChart.highlightValues(null);
+        }
+        if (bpBarChart != null) {
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
+            String[] days = getWeekDayArray();
+            for (int d = 0; d < days.length; d++) {
+                if (dayFormat.format(cal.getTime()).toUpperCase().equals(days[d])) {
+                    bpBarChart.highlightValue(d + 1, 1);
+                    bpBarChart.highlightValue(d + 1, 2);
+                }
+            }
+        }
     }
 
     /**
@@ -299,18 +330,45 @@ public class BPActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected() {
                 lineHighlightActive = false;
-                int color = getResources().getColor(R.color.default_gray);
+                /*int color = getResources().getColor(R.color.default_gray);
                 if (barSelected) {
                     setGreyedOut(true);
                 } else if (!barSelected) {
                     setGreyedOut(false);
                 }
-                nowSyst.setText(nowSystOrig);
+                nowSyst.setText(nowSystOrig1);
                 nowSyst.setTextColor(color);
-                nowDiast.setText(nowDiastOrig);
+                nowDiast.setText(nowDiastOrig1);
                 nowDiast.setTextColor(color);
-                nowText.setText(nowTextOrig);
-                nowText.setTextColor(color);
+                nowText.setText(nowTextOrig1);
+                nowText.setTextColor(color);*/
+
+
+
+                bpLineChart.highlightValues(null);
+                int color = getResources().getColor(R.color.default_gray);
+
+                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    nowSyst.setTextColor(color);
+                    nowDiast.setTextColor(color);
+                    nowText.setTextColor(color);
+                    if (firstSetActive) {
+                        nowSyst.setText(nowSystOrig1);
+                        nowDiast.setText(nowDiastOrig1);
+                        nowText.setText(nowTextOrig1);
+                    } else {
+                        nowSyst.setText(nowSystOrig2);
+                        nowDiast.setText(nowDiastOrig2);
+                        nowText.setText(nowTextOrig2);
+                    }
+                }
+                if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    setGreyedOut(true);
+                    nowSyst.setTextColor(color);
+                    nowDiast.setTextColor(color);
+                    nowText.setTextColor(color);
+
+                }
 
             }
         });
@@ -354,16 +412,30 @@ public class BPActivity extends AppCompatActivity {
 
     }
     private void switchSet() {
+        if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+            setGreyedOut(true);
+        } else {
+            setGreyedOut(false);
+        }
         if (firstSetActive) {
             firstSetActive = false;
             lineSet_syst_curr = lineSet_syst2;
             lineSet_diast_curr = lineSet_diast2;
+            avgSyst.setText(avgSystOrig2);
+            avgDiast.setText(avgDiastOrig2);
+
+
             bpLineChart.setData(lineData2);
             bpLineChart.invalidate();
+
         } else {
             firstSetActive = true;
             lineSet_syst_curr = lineSet_syst1;
             lineSet_diast_curr = lineSet_diast1;
+            avgSyst.setText(nowSystOrig1);
+            avgDiast.setText(nowDiastOrig1);
+
+
             bpLineChart.setData(lineData1);
             bpLineChart.invalidate();
         }
@@ -376,6 +448,12 @@ public class BPActivity extends AppCompatActivity {
             nowText.setAlpha(1f);
         }
         if (b) {
+            if (lineHighlightActive) {
+                int color = ContextCompat.getColor(this,R.color.default_gray);
+                nowSyst.setTextColor(color);
+                nowDiast.setTextColor(color);
+                nowText.setTextColor(color);
+            }
             nowSyst.setAlpha(.33f);
             nowDiast.setAlpha(.33f);
             nowText.setAlpha(.33f);
@@ -464,55 +542,60 @@ public class BPActivity extends AppCompatActivity {
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
+                if (h.getX() == (float) 7) {
+                    onNothingSelected();
+                } else {
+                    bpLineChart.highlightValues(null);
+                    barSelected = true;
+                    switchSet();
 
-                bpLineChart.highlightValues(null);
-                barSelected = true;
-                switchSet();
+                    BarEntry bSyst = (BarEntry) e;
+                    BarEntry bDiast = getDiastEntry(bSyst);
+                    int color = getResources().getColor(R.color.highlighter2);
+                    int colorInactive = getResources().getColor(R.color.default_gray);
 
-                BarEntry bSyst = (BarEntry) e;
-                BarEntry bDiast = getDiastEntry(bSyst);
-                int color = getResources().getColor(R.color.highlighter2);
-                int colorInactive = getResources().getColor(R.color.default_gray);
+                    avgText.setTextColor(color);
+                    avgSyst.setText(Integer.toString((int) bSyst.getY()));
+                    avgSyst.setTextColor(color);
+                    avgDiast.setText(Integer.toString((int) bDiast.getY()));
+                    avgDiast.setTextColor(color);
 
-                avgText.setTextColor(color);
-                avgSyst.setText(Integer.toString((int) bSyst.getY()));
-                avgSyst.setTextColor(color);
-                avgDiast.setText(Integer.toString((int) bDiast.getY()));
-                avgDiast.setTextColor(color);
+                    nowText.setText(nowTextOrig1);
+                    nowText.setTextColor(colorInactive);
+                    nowSyst.setText(nowSystOrig1);
+                    nowSyst.setTextColor(colorInactive);
+                    nowDiast.setText(nowDiastOrig1);
+                    nowDiast.setTextColor(colorInactive);
 
-                nowText.setText(nowTextOrig);
-                nowText.setTextColor(colorInactive);
-                nowSyst.setText(nowSystOrig);
-                nowSyst.setTextColor(colorInactive);
-                nowDiast.setText(nowDiastOrig);
-                nowDiast.setTextColor(colorInactive);
-
-                setGreyedOut(true);
+                    setGreyedOut(true);
+                }
             }
 
 
             @Override
             public void onNothingSelected() {
+
                 bpLineChart.highlightValues(null);
                 barSelected = false;
 
                 int color = getResources().getColor(R.color.default_gray);
 
                 avgText.setTextColor(color);
-                avgSyst.setText(avgSystOrig);
+                avgSyst.setText(avgSystOrig1);
                 avgSyst.setTextColor(color);
-                avgDiast.setText(avgDiastOrig);
+                avgDiast.setText(avgDiastOrig1);
                 avgDiast.setTextColor(color);
 
-                nowText.setText(nowTextOrig);
+                nowText.setText(nowTextOrig1);
                 nowText.setTextColor(color);
-                nowSyst.setText(nowSystOrig);
+                nowSyst.setText(nowSystOrig1);
                 nowSyst.setTextColor(color);
-                nowDiast.setText(nowDiastOrig);
+                nowDiast.setText(nowDiastOrig1);
                 nowDiast.setTextColor(color);
 
 
                 setGreyedOut(false);
+
             }
         });
 
@@ -553,12 +636,12 @@ public class BPActivity extends AppCompatActivity {
 
     private String[] getWeekDayArray() {
         String[] days = new String[7];
-        Calendar today = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
-        today.add(Calendar.DATE, -7);
+        now.add(Calendar.DATE, -7);
         for (int i = 0; i < 7; i++) {
-            today.add(Calendar.DATE, +1);
-            days[i] = dayFormat.format(today.getTime()).toUpperCase();
+            now.add(Calendar.DATE, +1);
+            days[i] = dayFormat.format(now.getTime()).toUpperCase();
         }
         return days;
     }
@@ -574,6 +657,38 @@ public class BPActivity extends AppCompatActivity {
                 activeDate.add(Calendar.DATE, +1);
                 setDateInActivity(activeDate);
                 switchSet();
+            } if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                nowSyst.setText(nowSystOrig1);
+                nowDiast.setText(nowDiastOrig1);
+            }
+        }
+    }
+
+    public void nowBoxClicked(View view) {
+        if (lineHighlightActive) {
+            int color = ContextCompat.getColor(this, R.color.default_gray);
+            bpLineChart.highlightValues(null);
+
+            if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                nowSyst.setTextColor(color);
+                nowDiast.setTextColor(color);
+                nowText.setTextColor(color);
+                if (firstSetActive) {
+                    nowSyst.setText(nowSystOrig1);
+                    nowDiast.setText(nowDiastOrig1);
+                    nowText.setText(nowTextOrig1);
+                } else {
+                    nowSyst.setText(nowSystOrig2);
+                    nowDiast.setText(nowDiastOrig2);
+                    nowText.setText(nowTextOrig2);
+                }
+            }
+            if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                setGreyedOut(true);
+                nowSyst.setTextColor(color);
+                nowDiast.setTextColor(color);
+                nowText.setTextColor(color);
+
             }
         }
     }

@@ -64,12 +64,14 @@
         android:layout_marginTop="10dp">
 
         <LinearLayout
+            android:id="@+id/bp_nowBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_alignParentLeft="true"
             android:gravity="center"
             android:orientation="vertical"
+            android:onClick="nowBoxClicked"
             >
             <TextView
                 android:id="@+id/left_syst_nbr"

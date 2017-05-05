@@ -267,31 +267,29 @@ public class HeartActivity extends AppCompatActivity {
         heartChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int highlighter1 = getResources().getColor(R.color.highlighter1);
-                heartZone = (TextView) findViewById(R.id.heartZone);
-                int pulse = (int) h.getY();
 
-                if (pulse < fatburnLimit) {
-                    heartZone.setText("RESTING");
-                }
-                else if (pulse >= fatburnLimit && pulse < cardioLimit) {
-                    heartZone.setText("FATBURN");
-                }
-                else if (pulse >= cardioLimit && pulse < peakLimit) {
-                    heartZone.setText("CARDIO");
-                }
-                else if (pulse >= peakLimit) {
-                    heartZone.setText("PEAK");
-                }
+                    int highlighter1 = getResources().getColor(R.color.highlighter1);
+                    heartZone = (TextView) findViewById(R.id.heartZone);
+                    int pulse = (int) h.getY();
+
+                    if (pulse < fatburnLimit) {
+                        heartZone.setText("RESTING");
+                    } else if (pulse >= fatburnLimit && pulse < cardioLimit) {
+                        heartZone.setText("FATBURN");
+                    } else if (pulse >= cardioLimit && pulse < peakLimit) {
+                        heartZone.setText("CARDIO");
+                    } else if (pulse >= peakLimit) {
+                        heartZone.setText("PEAK");
+                    }
 
 
-                pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
-                pulseNbr.setText(Integer.toString(Math.round(e.getY())));
-                pulseNbr.setTextColor(highlighter1);
+                    pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
+                    pulseNbr.setText(Integer.toString(Math.round(e.getY())));
+                    pulseNbr.setTextColor(highlighter1);
 
-                pulseText = (TextView) findViewById(R.id.pulse_txt);
-                pulseText.setText("CURSOR");
-                pulseText.setTextColor(highlighter1);
+                    pulseText = (TextView) findViewById(R.id.pulse_txt);
+                    pulseText.setText("CURSOR");
+                    pulseText.setTextColor(highlighter1);
 
             }
 
