@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -61,11 +63,17 @@ public class SleepActivity extends AppCompatActivity {
     private int lightColor;
     private int deepColor;
 
-    private String currentTotalSlept = "06:38";
-    private String currentAwake = "00:28";
-    private String currentRem = "02:26";
-    private String currentLight = "01:58";
-    private String currentDeep = "02:51";
+    private String currentTotalSleptString = "06:38";
+    private String currentAwakeString = "00:28";
+    private String currentRemString = "02:26";
+    private String currentLightString = "01:58";
+    private String currentDeepString = "02:51";
+
+    private float currentTotalSlept;
+    private float currentAwake;
+    private float currentRem;
+    private float currentLight;
+    private float currentDeep;
 
     private TextView totalNbr;
     private TextView totalText;
@@ -78,7 +86,11 @@ public class SleepActivity extends AppCompatActivity {
     private TextView deepNbr;
     private TextView deepText;
     private boolean firstSet;
+
     private Calendar activeDate;
+    private LineDataSet lineDataSetCurr;
+    private boolean todayClickedTwice;
+    private boolean todayClickedOnce;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +113,38 @@ public class SleepActivity extends AppCompatActivity {
             }
         });
         firstSet = true;
-        setTodaysDate();
+        activeDate = Calendar.getInstance();
         getTextViews();
+        setDateInActivityMethod(activeDate);
         drawSleepGraphs();
+    }
+
+
+    private void toggleDateBox(Calendar calendar) {
+
+        TextView dayBox = (TextView) findViewById(R.id.dayBox);
+        TextView dateBox = (TextView) findViewById(R.id.dateBox);
+        dayBox.setText(Methods.getDay(activeDate));
+        dateBox.setText(Methods.getDate(activeDate));
+    }
+
+    private void setDateInActivityMethod(Calendar cal) {
+
+
+        if (sleepLineChart != null) {
+            sleepLineChart.highlightValues(null);
+        }
+        if (sleepBarChart != null) {
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
+            String[] days = getWeekDayArray();
+            for (int d = 0; d < days.length; d++) {
+                if (dayFormat.format(cal.getTime()).toUpperCase().equals(days[d])) {
+                    sleepBarChart.highlightValue(d + 1, 0, true);
+
+
+                }
+            }
+        }
     }
 
     private void getTextViews() {
@@ -118,14 +159,8 @@ public class SleepActivity extends AppCompatActivity {
         deepNbr = (TextView) findViewById(R.id.deep_nbr);
         deepText = (TextView) findViewById(R.id.deep_text);
     }
-    private void setTodaysDate() {
-        // NOT FINISHED!
-        activeDate = Calendar.getInstance();
-        TextView dayBox = (TextView) findViewById(R.id.dayBox);
-        TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(Methods.getDay(activeDate));
-        dateBox.setText(Methods.getDate(activeDate));
-    }
+
+
 
     private void drawSleepGraphs() {
         setupLineEntries();
@@ -151,14 +186,14 @@ public class SleepActivity extends AppCompatActivity {
         int graphHeight = sleepLineChart.getHeight();
         float grad = .1f;
 
-        awakeColor = ContextCompat.getColor(this,R.color.sleep_awake);
-        remColor = ContextCompat.getColor(this,R.color.sleep_rem);
-        lightColor = ContextCompat.getColor(this,R.color.sleep_light);
-        deepColor = ContextCompat.getColor(this,R.color.sleep_deep);
+        awakeColor = ContextCompat.getColor(this, R.color.sleep_awake);
+        remColor = ContextCompat.getColor(this, R.color.sleep_rem);
+        lightColor = ContextCompat.getColor(this, R.color.sleep_light);
+        deepColor = ContextCompat.getColor(this, R.color.sleep_deep);
 
-        int[] colors = {awakeColor,awakeColor,remColor,remColor,lightColor,lightColor,deepColor,deepColor};
+        int[] colors = {awakeColor, awakeColor, remColor, remColor, lightColor, lightColor, deepColor, deepColor};
 
-        float[] positions = {0f,.25f-grad,.25f+grad,.5f-grad, .5f+grad, .75f-grad, .75f+grad, 1f};
+        float[] positions = {0f, .25f - grad, .25f + grad, .5f - grad, .5f + grad, .75f - grad, .75f + grad, 1f};
 
         LinearGradient linGrad = new LinearGradient(0f, y0, 0f, y1,
                 colors,
@@ -226,7 +261,7 @@ public class SleepActivity extends AppCompatActivity {
     private void setupLineGraph() {
         sleepLineChart = (LineChart) findViewById(R.id.linegraph_sleep);
         lineDataSet1 = new LineDataSet(lineEntries1, "");
-        lineDataSet2 = new LineDataSet(lineEntries2,"");
+        lineDataSet2 = new LineDataSet(lineEntries2, "");
         lineData1 = new LineData(lineDataSet1);
         lineData2 = new LineData(lineDataSet2);
         sleepLineChart.setData(lineData1);
@@ -259,7 +294,7 @@ public class SleepActivity extends AppCompatActivity {
         // X-axis
         XAxis xAxis = sleepLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(2,true);
+        xAxis.setLabelCount(2, true);
         xAxis.setValueFormatter(new SleepXAxisValueFormatter());
         LineData lineData = new LineData(lineDataSet1);
         sleepLineChart.setData(lineData);
@@ -282,20 +317,19 @@ public class SleepActivity extends AppCompatActivity {
 
         //Limitlines
         LimitLine line1 = new LimitLine(1.5f);
-        line1.enableDashedLine(20f,20f,0f);
-        line1.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        line1.enableDashedLine(20f, 20f, 0f);
+        line1.setLineColor(ContextCompat.getColor(this, R.color.default_gray));
         yAxisLeft.addLimitLine(line1);
 
         LimitLine line2 = new LimitLine(2.5f);
-        line2.enableDashedLine(20f,20f,0f);
-        line2.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        line2.enableDashedLine(20f, 20f, 0f);
+        line2.setLineColor(ContextCompat.getColor(this, R.color.default_gray));
         yAxisLeft.addLimitLine(line2);
 
         LimitLine line3 = new LimitLine(3.5f);
-        line3.enableDashedLine(20f,20f,0f);
-        line3.setLineColor(ContextCompat.getColor(this,R.color.default_gray));
+        line3.enableDashedLine(20f, 20f, 0f);
+        line3.setLineColor(ContextCompat.getColor(this, R.color.default_gray));
         yAxisLeft.addLimitLine(line3);
-
 
 
     }
@@ -339,19 +373,19 @@ public class SleepActivity extends AppCompatActivity {
         barEntriesDeep.add(new BarEntry(7,42f));*/
 
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1,new float[]{.46f,2.45f,1.97f,2.87f}));
-        barEntries.add(new BarEntry(2,new float[]{.49f,.56f,3.23f,3.87f}));
-        barEntries.add(new BarEntry(3,new float[]{.65f,.74f,3.12f,4.21f}));
-        barEntries.add(new BarEntry(4,new float[]{.12f,1.2f,2.43f,2.67f}));
-        barEntries.add(new BarEntry(5,new float[]{.72f,.98f,2.69f,1.98f}));
-        barEntries.add(new BarEntry(6,new float[]{.48f,.30f,3.19f,2.87f}));
-        barEntries.add(new BarEntry(7,new float[]{.39f,.93f,3.78f,3.83f}));
+        barEntries.add(new BarEntry(1, new float[]{.46f, 2.45f, 1.97f, 2.87f}));
+        barEntries.add(new BarEntry(2, new float[]{.49f, .56f, 3.23f, 3.87f}));
+        barEntries.add(new BarEntry(3, new float[]{.65f, .74f, 3.12f, 4.21f}));
+        barEntries.add(new BarEntry(4, new float[]{.12f, 1.2f, 2.43f, 2.67f}));
+        barEntries.add(new BarEntry(5, new float[]{.72f, .98f, 2.69f, 1.98f}));
+        barEntries.add(new BarEntry(6, new float[]{.48f, .30f, 3.19f, 2.87f}));
+        barEntries.add(new BarEntry(7, new float[]{.39f, .93f, 3.78f, 3.83f}));
     }
 
     private void setupBarGraph() {
         sleepBarChart = (BarChart) findViewById(R.id.bargraph_sleep);
         barDataSet = new BarDataSet(barEntries, "");
-        barDataSet.setColors(deepColor,lightColor,remColor,awakeColor);
+        barDataSet.setColors(deepColor, lightColor, remColor, awakeColor);
         data = new BarData(barDataSet);
         sleepBarChart.setData(data);
 
@@ -372,25 +406,53 @@ public class SleepActivity extends AppCompatActivity {
         sleepBarChart.setHighlightFullBarEnabled(true);
 
         //Highlight
-        barDataSet.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        barDataSet.setHighLightColor(ContextCompat.getColor(this, R.color.highlighter2));
         barDataSet.setHighLightAlpha(150);
         sleepBarChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                switchSet();
+                int toAdd = 7-(int) h.getX();
+                Calendar thisDate = Calendar.getInstance();
+                thisDate.add(Calendar.DATE,-toAdd);
+                activeDate = thisDate;
+                toggleDateBox(thisDate);
+
                 BarEntry b = (BarEntry) e;
                 int color = getResources().getColor(R.color.highlighter2);
-                totalNbr.setText(getInTime(b.getPositiveSum()));
-                awakeNbr.setText(getInTime(b.getYVals()[0]));
-                remNbr.setText(getInTime(b.getYVals()[1]));
-                lightNbr.setText(getInTime(b.getYVals()[2]));
-                deepNbr.setText(getInTime(b.getYVals()[3]));
+                int colorInactive = getResources().getColor(R.color.default_gray);
 
-                totalNbr.setTextColor(color);
-                awakeNbr.setTextColor(color);
-                remNbr.setTextColor(color);
-                lightNbr.setTextColor(color);
-                deepNbr.setTextColor(color);
+                currentTotalSlept = b.getPositiveSum();
+                currentAwake = b.getYVals()[0];
+                currentRem = b.getYVals()[1];
+                currentLight = b.getYVals()[2];
+                currentDeep = b.getYVals()[3];
+
+                if (h.getX() == (float) 7) {
+                    sleepBarChart.highlightValues(null);
+                    totalNbr.setTextColor(colorInactive);
+
+                    totalNbr.setTextColor(colorInactive);
+                    awakeNbr.setTextColor(colorInactive);
+                    remNbr.setTextColor(colorInactive);
+                    lightNbr.setTextColor(colorInactive);
+                    deepNbr.setTextColor(colorInactive);
+                }
+
+                if (!(h.getX() == (float) 7)) {
+                    totalNbr.setTextColor(color);
+                    awakeNbr.setTextColor(color);
+                    remNbr.setTextColor(color);
+                    lightNbr.setTextColor(color);
+                    deepNbr.setTextColor(color);
+                }
+
+
+                totalNbr.setText(getInTime(currentTotalSlept));
+                awakeNbr.setText(getInTime(currentAwake));
+                remNbr.setText(getInTime(currentRem));
+                lightNbr.setText(getInTime(currentLight));
+                deepNbr.setText(getInTime(currentDeep));
+
 
             }
 
@@ -398,11 +460,11 @@ public class SleepActivity extends AppCompatActivity {
             public void onNothingSelected() {
                 switchSet();
                 int color = getResources().getColor(R.color.default_gray);
-                totalNbr.setText(currentTotalSlept);
-                awakeNbr.setText(currentAwake);
-                remNbr.setText(currentRem);
-                lightNbr.setText(currentLight);
-                deepNbr.setText(currentDeep);
+                totalNbr.setText(currentTotalSleptString);
+                awakeNbr.setText(currentAwakeString);
+                remNbr.setText(currentRemString);
+                lightNbr.setText(currentLightString);
+                deepNbr.setText(currentDeepString);
 
                 totalNbr.setTextColor(color);
                 awakeNbr.setTextColor(color);
@@ -441,17 +503,42 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     private void switchSet() {
+        if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+            if (!todayClickedTwice) {
+                todayClickedOnce = false;
+                todayClickedTwice = false;
+                switchSetHelper();
+            }
+        } else {
+            switchSetHelper();
+        }
+    }
+
+    private void switchSetHelper() {
         if (firstSet) {
             firstSet = false;
+            lineDataSetCurr = lineDataSet2;
+            //avgSyst.setText(avgSystOrig2);
+            //avgDiast.setText(avgDiastOrig2);
+
+
             sleepLineChart.setData(lineData2);
             sleepLineChart.invalidate();
 
         } else {
             firstSet = true;
+            lineDataSetCurr = lineDataSet1;
+            //avgSyst.setText(nowSystOrig1);
+            //avgDiast.setText(nowDiastOrig1);
+
+
             sleepLineChart.setData(lineData1);
             sleepLineChart.invalidate();
+
         }
     }
+
+
     private String getInTime(float value) {
 
         DecimalFormat formatter = new DecimalFormat("00");
@@ -463,8 +550,25 @@ public class SleepActivity extends AppCompatActivity {
         return hoursString + ":" + minutesString;
 
     }
-}
 
+
+    public void dateChange(View view) {
+        if (view == findViewById(R.id.sleep_dateBackButton)) {
+            activeDate.add(Calendar.DATE, -1);
+            setDateInActivityMethod(activeDate);
+        }
+        if (view == findViewById(R.id.sleep_dateForwardButton)) {
+            if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                activeDate.add(Calendar.DATE, +1);
+                setDateInActivityMethod(activeDate);
+            }
+            if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                //nowSyst.setText(nowSystOrig1);
+                //nowDiast.setText(nowDiastOrig1);
+            }
+        }
+    }
+}
 
 
 class SleepValueFormatter implements IAxisValueFormatter {

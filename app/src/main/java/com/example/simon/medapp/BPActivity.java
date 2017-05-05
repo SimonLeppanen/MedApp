@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -42,6 +41,7 @@ public class BPActivity extends AppCompatActivity {
 
     private Calendar activeDate;
     private Calendar today;
+    private Calendar barListenerCalendar;
     private LineChart bpLineChart;
     private BarChart bpBarChart;
 
@@ -93,6 +93,8 @@ public class BPActivity extends AppCompatActivity {
     private boolean firstSetActive;
     private LineData lineData1;
     private LineData lineData2;
+    private boolean todayClickedTwice;
+    private boolean todayClickedOnce;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +125,7 @@ public class BPActivity extends AppCompatActivity {
         activeDate = Calendar.getInstance();
         firstSetActive = true;
         getTextViews();
-        setDateInActivity(Calendar.getInstance());
+        setDateInActivityMethod(Calendar.getInstance());
         drawGraphs();
 
     }
@@ -164,12 +166,17 @@ public class BPActivity extends AppCompatActivity {
         bpBarChart.invalidate();// refresh
     }
 
+    private void toggleDateBox(Calendar calendar) {
 
-    private void setDateInActivity(Calendar cal) {
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(Methods.getDay(cal));
-        dateBox.setText(Methods.getDate(cal));
+        dayBox.setText(Methods.getDay(calendar));
+        dateBox.setText(Methods.getDate(calendar));
+    }
+
+    private void setDateInActivityMethod(Calendar cal) {
+
+
         if (bpLineChart != null) {
             bpLineChart.highlightValues(null);
         }
@@ -178,12 +185,15 @@ public class BPActivity extends AppCompatActivity {
             String[] days = getWeekDayArray();
             for (int d = 0; d < days.length; d++) {
                 if (dayFormat.format(cal.getTime()).toUpperCase().equals(days[d])) {
-                    bpBarChart.highlightValue(d + 1, 1);
-                    bpBarChart.highlightValue(d + 1, 2);
+                    bpBarChart.highlightValue(d + 1,0,true);
+
+
+
                 }
             }
         }
     }
+
 
     /**
      * Creates graph, adds data
@@ -412,17 +422,26 @@ public class BPActivity extends AppCompatActivity {
 
     }
     private void switchSet() {
-        if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
-            setGreyedOut(true);
-        } else {
+        if (DateUtils.isToday(activeDate.getTimeInMillis())) {
             setGreyedOut(false);
+            if (!todayClickedTwice) {
+                todayClickedOnce = false;
+                todayClickedTwice = false;
+                switchSetHelper();
+            }
+        } else {
+            setGreyedOut(true);
+            switchSetHelper();
         }
+    }
+
+    private void switchSetHelper() {
         if (firstSetActive) {
             firstSetActive = false;
             lineSet_syst_curr = lineSet_syst2;
             lineSet_diast_curr = lineSet_diast2;
-            avgSyst.setText(avgSystOrig2);
-            avgDiast.setText(avgDiastOrig2);
+            //avgSyst.setText(avgSystOrig2);
+            //avgDiast.setText(avgDiastOrig2);
 
 
             bpLineChart.setData(lineData2);
@@ -432,12 +451,13 @@ public class BPActivity extends AppCompatActivity {
             firstSetActive = true;
             lineSet_syst_curr = lineSet_syst1;
             lineSet_diast_curr = lineSet_diast1;
-            avgSyst.setText(nowSystOrig1);
-            avgDiast.setText(nowDiastOrig1);
+            //avgSyst.setText(nowSystOrig1);
+            //avgDiast.setText(nowDiastOrig1);
 
 
             bpLineChart.setData(lineData1);
             bpLineChart.invalidate();
+
         }
     }
 
@@ -542,39 +562,57 @@ public class BPActivity extends AppCompatActivity {
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
+                int toAdd = 7-(int) h.getX();
+                Calendar thisDate = Calendar.getInstance();
+                thisDate.add(Calendar.DATE,-toAdd);
+                activeDate = thisDate;
+                toggleDateBox(thisDate);
+                switchSet();
+
+
+                BarEntry bSyst = (BarEntry) e;
+                BarEntry bDiast = getDiastEntry(bSyst);
+                int color = getResources().getColor(R.color.highlighter2);
+                int colorInactive = getResources().getColor(R.color.default_gray);
+
                 if (h.getX() == (float) 7) {
-                    onNothingSelected();
-                } else {
-                    bpLineChart.highlightValues(null);
-                    barSelected = true;
-                    switchSet();
-
-                    BarEntry bSyst = (BarEntry) e;
-                    BarEntry bDiast = getDiastEntry(bSyst);
-                    int color = getResources().getColor(R.color.highlighter2);
-                    int colorInactive = getResources().getColor(R.color.default_gray);
-
-                    avgText.setTextColor(color);
-                    avgSyst.setText(Integer.toString((int) bSyst.getY()));
-                    avgSyst.setTextColor(color);
-                    avgDiast.setText(Integer.toString((int) bDiast.getY()));
-                    avgDiast.setTextColor(color);
-
+                    bpBarChart.highlightValues(null);
+                    avgText.setTextColor(colorInactive);
+                    avgSyst.setTextColor(colorInactive);
+                    avgDiast.setTextColor(colorInactive);
                     nowText.setText(nowTextOrig1);
-                    nowText.setTextColor(colorInactive);
                     nowSyst.setText(nowSystOrig1);
-                    nowSyst.setTextColor(colorInactive);
                     nowDiast.setText(nowDiastOrig1);
-                    nowDiast.setTextColor(colorInactive);
-
+                }
+                if (!(h.getX() == (float) 7)) {
+                    barSelected = true;
+                    avgText.setTextColor(color);
+                    avgSyst.setTextColor(color);
+                    avgDiast.setTextColor(color);
                     setGreyedOut(true);
                 }
+                bpLineChart.highlightValues(null);
+
+
+                avgSyst.setText(Integer.toString((int) bSyst.getY()));
+                avgDiast.setText(Integer.toString((int) bDiast.getY()));
+
+                nowText.setTextColor(colorInactive);
+                nowSyst.setTextColor(colorInactive);
+                nowDiast.setTextColor(colorInactive);
+
+
             }
 
 
             @Override
             public void onNothingSelected() {
+                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    todayClickedTwice = todayClickedOnce;
+                    todayClickedOnce = true;
 
+                }
+                toggleDateBox(activeDate);
                 bpLineChart.highlightValues(null);
                 barSelected = false;
 
@@ -636,12 +674,12 @@ public class BPActivity extends AppCompatActivity {
 
     private String[] getWeekDayArray() {
         String[] days = new String[7];
-        Calendar now = Calendar.getInstance();
+        Calendar rightnow = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
-        now.add(Calendar.DATE, -7);
+        rightnow.add(Calendar.DATE, -7);
         for (int i = 0; i < 7; i++) {
-            now.add(Calendar.DATE, +1);
-            days[i] = dayFormat.format(now.getTime()).toUpperCase();
+            rightnow.add(Calendar.DATE, +1);
+            days[i] = dayFormat.format(rightnow.getTime()).toUpperCase();
         }
         return days;
     }
@@ -649,14 +687,12 @@ public class BPActivity extends AppCompatActivity {
     public void dateChange(View view) {
         if (view == findViewById(R.id.bp_dateBackButton)) {
             activeDate.add(Calendar.DATE,-1);
-            setDateInActivity(activeDate);
-            switchSet();
+            setDateInActivityMethod(activeDate);
         }
         if (view == findViewById(R.id.bp_dateForwardButton)) {
             if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
                 activeDate.add(Calendar.DATE, +1);
-                setDateInActivity(activeDate);
-                switchSet();
+                setDateInActivityMethod(activeDate);
             } if (DateUtils.isToday(activeDate.getTimeInMillis())) {
                 nowSyst.setText(nowSystOrig1);
                 nowDiast.setText(nowDiastOrig1);

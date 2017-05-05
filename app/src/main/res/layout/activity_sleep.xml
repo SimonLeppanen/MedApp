@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:gravity="center">
         <ImageView
-            android:id="@+id/dateBackButton"
+            android:id="@+id/sleep_dateBackButton"
             android:onClick="dateChange"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -46,7 +46,7 @@
                 android:text="Sep 25"/>
         </LinearLayout>
         <ImageView
-            android:id="@+id/dateForwardButton"
+            android:id="@+id/sleep_dateForwardButton"
             android:onClick="dateChange"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -73,7 +73,7 @@
                 android:id="@+id/total_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="06:38"
+                android:text="08:55"
                 android:textSize="50sp"
                 />
             <TextView
@@ -129,28 +129,28 @@
                 android:id="@+id/awake_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:28"
+                android:text="00:23"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/rem_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="02:26"
+                android:text="00:55"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/light_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01:58"
+                android:text="03:46"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/deep_nbr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="02:51"
+                android:text="03:49"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
         </LinearLayout>

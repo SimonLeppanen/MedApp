@@ -26,7 +26,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +44,8 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private int feverColor;
     private int normalColor;
+
+    private float cursorTemp;
 
 
     private LineChart temperatureChart;
@@ -84,8 +85,8 @@ public class TemperatureActivity extends AppCompatActivity {
         today = Calendar.getInstance();
         firstSetActive = true;
 
-        setDateInActivity(activeDate);
         getTextViews();
+        setDateInActivity(today);
         drawGraph();
 
 
@@ -103,8 +104,27 @@ public class TemperatureActivity extends AppCompatActivity {
 
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
-        dayBox.setText(getDay(calendar));
-        dateBox.setText(getDate(calendar));
+        dayBox.setText(Methods.getDay(calendar));
+        dateBox.setText(Methods.getDate(calendar));
+        if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+            greyedOut(false);
+        }
+        if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+            greyedOut(true);
+        }
+    }
+
+    private void greyedOut(boolean b) {
+        if (b) {
+            temperatureNbr.setAlpha(.33f);
+            temperatureText.setAlpha(.33f);
+            temperatureC.setAlpha(.33f);
+        }
+        if (!b) {
+            temperatureNbr.setAlpha(1f);
+            temperatureText.setAlpha(1f);
+            temperatureC.setAlpha(1f);
+        }
     }
 
     public void dateChange(View view) {
@@ -298,6 +318,9 @@ public class TemperatureActivity extends AppCompatActivity {
                 int colorHighlight = getResources().getColor(R.color.highlighter2);
                 int colorDefault = getResources().getColor(R.color.default_gray);
                 int colorFever = getResources().getColor(R.color.temperature_fever);
+                cursorTemp = h.getY();
+                greyedOut(false);
+
                 if (!isFever(e)) {
                     temperatureNbr.setText(Float.toString(e.getY()));
                     temperatureNbr.setTextColor(colorHighlight);
@@ -318,14 +341,19 @@ public class TemperatureActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
+                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    greyedOut(false);
+                } else {
+                    greyedOut(true);
+                }
                 int colorDefault = getResources().getColor(R.color.default_gray);
                 temperatureText.setTextColor(colorDefault);
-                temperatureText.setText(temperatureTextOrig);
-                temperatureNbr.setText(temperatureNbrOrig);
+                temperatureNbr.setText(Float.toString(cursorTemp));
                 temperatureNbr.setTextColor(colorDefault);
                 temperatureC.setTextColor(colorDefault);
             }
         });
+
 
         // Zoom disabled
         temperatureChart.setScaleEnabled(false);
@@ -367,29 +395,9 @@ public class TemperatureActivity extends AppCompatActivity {
         return e.getY() > fever;
     }
 
-    /**
-     * Changes date when arrows clicked in layout, NOT FINISHED
-     * @param view id of arrow-button
-     */
+    public void tempNbrClicked(View view) {
+        temperatureChart.highlightValue(null,true);
 
-    /**
-     *
-     * @param cal: calendar-object
-     * @return String for day of the week fully written out, ex. Friday
-     */
-    public String getDay(Calendar cal) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
-        return dateFormat.format(cal.getTime());
-    }
-
-    /**
-     *
-     * @param cal: date-object
-     * @return String for month and day, ex. September, 25
-     */
-    public String getDate(Calendar cal) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM, d");
-        return dateFormat.format(cal.getTime());
     }
 }
 

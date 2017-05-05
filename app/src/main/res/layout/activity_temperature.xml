@@ -68,6 +68,7 @@
             android:src="@drawable/temperature_icon_2"/>
         <TextView
             android:id="@+id/temp_nbr"
+            android:onClick="tempNbrClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

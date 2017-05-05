@@ -9,10 +9,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
@@ -21,15 +23,18 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.simon.medapp.R.color.accent_material_dark;
 import static com.example.simon.medapp.R.color.highlighter1;
 import static java.lang.Math.abs;
 
@@ -61,6 +66,7 @@ public class HeartActivity extends AppCompatActivity {
 
     private double minPulse = 0;
     private double maxPulse;
+    private int pulse;
 
     private double fatburnLimit;
     private double cardioLimit;
@@ -71,10 +77,14 @@ public class HeartActivity extends AppCompatActivity {
     private TextView heartZone;
     private TextView restNbr;
     private TextView hrvNbr;
+    private ImageView heartIcon;
+
     private int currentPulse;
     private int origTextColor;
 
     private boolean firstSet;
+    private int pulseOrig;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +94,7 @@ public class HeartActivity extends AppCompatActivity {
                 .getColor(R.color.colorCardHeader)));
         TableLayout t = (TableLayout) findViewById(R.id.heart_table);
         t.setVisibility(View.INVISIBLE);
-        currentPulse = 67;
+
         //Runs graph to be able to create layout
         findViewById(R.id.graph_heart).post(new Runnable() {
             @Override
@@ -94,22 +104,51 @@ public class HeartActivity extends AppCompatActivity {
             }
         });
 
+        pulse = 67;
+        pulseOrig = 67;
         restNbr = (TextView) findViewById(R.id.rest_nbr);
         hrvNbr = (TextView) findViewById(R.id.hrv_nbr);
+        pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
+        pulseText = (TextView) findViewById(R.id.pulse_txt);
+        heartZone = (TextView) findViewById(R.id.heartZone);
+        heartIcon = (ImageView) findViewById(R.id.heart_icon);
         firstSet = true;
         activeDate = Calendar.getInstance();
         today = Calendar.getInstance();
+
         setDateInActivity(today);
         drawGraph();
 
     }
 
+    private void grayedOut(boolean b) {
+        if (b) {
+            pulseNbr.setAlpha(.33f);
+            pulseText.setAlpha(.33f);
+            heartZone.setAlpha(.33f);
+            heartIcon.setAlpha(.33f);
+
+        }
+        if (!b) {
+            pulseNbr.setAlpha(1f);
+            pulseText.setAlpha(1f);
+            heartZone.setAlpha(1f);
+            heartIcon.setAlpha(1f);
+        }
+
+    }
     private void setDateInActivity(Calendar calendar) {
         // NOT FINISHED!
         TextView dayBox = (TextView) findViewById(R.id.dayBox);
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
         dayBox.setText(Methods.getDay(calendar));
         dateBox.setText(Methods.getDate(calendar));
+        if (!DateUtils.isToday(calendar.getTimeInMillis())) {
+            grayedOut(true);
+        }
+        if (DateUtils.isToday(calendar.getTimeInMillis())) {
+            grayedOut(false);
+        }
     }
 
     public void drawGraph() {
@@ -253,6 +292,7 @@ public class HeartActivity extends AppCompatActivity {
         // X-axis
         XAxis xAxis = heartChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new XAxisValueFormatter());
 
 
         //Highlighter&listener
@@ -270,7 +310,7 @@ public class HeartActivity extends AppCompatActivity {
 
                     int highlighter1 = getResources().getColor(R.color.highlighter1);
                     heartZone = (TextView) findViewById(R.id.heartZone);
-                    int pulse = (int) h.getY();
+                    pulse = (int) h.getY();
 
                     if (pulse < fatburnLimit) {
                         heartZone.setText("RESTING");
@@ -282,9 +322,9 @@ public class HeartActivity extends AppCompatActivity {
                         heartZone.setText("PEAK");
                     }
 
-
+                    grayedOut(false);
                     pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
-                    pulseNbr.setText(Integer.toString(Math.round(e.getY())));
+                    pulseNbr.setText(Integer.toString(pulse));
                     pulseNbr.setTextColor(highlighter1);
 
                     pulseText = (TextView) findViewById(R.id.pulse_txt);
@@ -295,17 +335,19 @@ public class HeartActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
-                pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
-                pulseText = (TextView) findViewById(R.id.pulse_txt);
-
                 int default_gray = getResources().getColor(R.color.default_gray);
-
-                pulseNbr.setTextColor(default_gray);
-                pulseNbr.setText(Integer.toString(currentPulse));
-
-                pulseText.setTextColor(default_gray);
-                pulseText.setText("PULSE");
-
+                if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    grayedOut(true);
+                    pulseNbr.setText(Integer.toString(pulse));
+                    pulseNbr.setTextColor(default_gray);
+                    pulseText.setTextColor(default_gray);
+                }
+                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    pulseNbr.setText(Integer.toString(pulseOrig));
+                    pulseNbr.setTextColor(default_gray);
+                    pulseText.setTextColor(default_gray);
+                    pulseText.setText("PULSE");
+                }
             }
         });
 
@@ -394,6 +436,7 @@ public class HeartActivity extends AppCompatActivity {
     public void dateChange(View view) {
 
         if (view == findViewById(R.id.heart_dateBackButton)) {
+
             activeDate.add(Calendar.DATE,-1);
             setDateInActivity(activeDate);
             switchSet();
@@ -405,24 +448,31 @@ public class HeartActivity extends AppCompatActivity {
                 switchSet();
             }
         }
+        pulseNbrClicked(new View(this));
 
     }
 
     public void pulseNbrClicked(View view) {
-        heartChart.highlightValues(null);
-        pulseNbr = (TextView) findViewById(R.id.pulse_nbr);
-        pulseText = (TextView) findViewById(R.id.pulse_txt);
-
+        heartChart.highlightValue(null,true);
+/*
         int default_gray = getResources().getColor(R.color.default_gray);
 
         pulseNbr.setTextColor(default_gray);
-        pulseNbr.setText(Integer.toString(currentPulse));
+        pulseNbr.setText(Integer.toString(pulse));
 
         pulseText.setTextColor(default_gray);
-        pulseText.setText("PULSE");
+        pulseText.setText("PULSE");*/
     }
 }
 
+class XAxisValueFormatter implements IAxisValueFormatter {
+
+    DecimalFormat d = new DecimalFormat("00");
+    @Override
+    public String getFormattedValue(float value, AxisBase axis) {
+        return d.format((int) value) + ":00";
+    }
+}
 
 
 
