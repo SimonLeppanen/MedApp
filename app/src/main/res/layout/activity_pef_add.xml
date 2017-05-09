@@ -97,6 +97,12 @@
                 android:layout_marginLeft="40dp"
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"
+                android:inputType="textCapSentences"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/pef_comments"
                 android:textSize="16sp"/>
         </LinearLayout>
         <LinearLayout
@@ -111,17 +117,32 @@
                 android:textStyle="bold"
                 android:text="Comments: "/>
             <EditText
+                android:id="@+id/pef_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="10dp"
+                android:imeOptions="actionDone"
                 android:textSize="16sp"/>
 
-
         </LinearLayout>
-
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:backgroundTint="@color/addbuttonbackground"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="ADD"
+            android:clickable="true"
+            android:onClick="addClick"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -63,11 +63,11 @@ public class SleepActivity extends AppCompatActivity {
     private int lightColor;
     private int deepColor;
 
-    private String currentTotalSleptString = "06:38";
-    private String currentAwakeString = "00:28";
-    private String currentRemString = "02:26";
-    private String currentLightString = "01:58";
-    private String currentDeepString = "02:51";
+    private String currentTotalSleptString = "08:55";
+    private String currentAwakeString = "00:23";
+    private String currentRemString = "00:55";
+    private String currentLightString = "03:46";
+    private String currentDeepString = "03:49";
 
     private float currentTotalSlept;
     private float currentAwake;
@@ -301,6 +301,7 @@ public class SleepActivity extends AppCompatActivity {
 
         //Highlighter
         lineDataSet1.setHighlightEnabled(false);
+        lineDataSet2.setHighlightEnabled(false);
 
         // Zoom disabled
         sleepLineChart.setScaleEnabled(false);
@@ -373,13 +374,13 @@ public class SleepActivity extends AppCompatActivity {
         barEntriesDeep.add(new BarEntry(7,42f));*/
 
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(1, new float[]{.46f, 2.45f, 1.97f, 2.87f}));
-        barEntries.add(new BarEntry(2, new float[]{.49f, .56f, 3.23f, 3.87f}));
-        barEntries.add(new BarEntry(3, new float[]{.65f, .74f, 3.12f, 4.21f}));
-        barEntries.add(new BarEntry(4, new float[]{.12f, 1.2f, 2.43f, 2.67f}));
-        barEntries.add(new BarEntry(5, new float[]{.72f, .98f, 2.69f, 1.98f}));
-        barEntries.add(new BarEntry(6, new float[]{.48f, .30f, 3.19f, 2.87f}));
-        barEntries.add(new BarEntry(7, new float[]{.39f, .93f, 3.78f, 3.83f}));
+        barEntries.add(new BarEntry(1, new float[]{ 2.87f,1.97f,2.45f, .46f}));
+        barEntries.add(new BarEntry(2, new float[]{3.87f, 3.23f,.56f, .49f}));
+        barEntries.add(new BarEntry(3, new float[]{ 4.21f, 3.12f,.74f,.65f}));
+        barEntries.add(new BarEntry(4, new float[]{2.67f, 2.43f,1.2f,.12f}));
+        barEntries.add(new BarEntry(5, new float[]{ 1.98f, 2.69f, .98f,.72f}));
+        barEntries.add(new BarEntry(6, new float[]{ 2.87f, 3.19f,.30f,.48f}));
+        barEntries.add(new BarEntry(7, new float[]{3.83f, 3.78f,.93f, .39f}));
     }
 
     private void setupBarGraph() {
@@ -414,6 +415,7 @@ public class SleepActivity extends AppCompatActivity {
                 int toAdd = 7-(int) h.getX();
                 Calendar thisDate = Calendar.getInstance();
                 thisDate.add(Calendar.DATE,-toAdd);
+
                 activeDate = thisDate;
                 toggleDateBox(thisDate);
 
@@ -422,12 +424,13 @@ public class SleepActivity extends AppCompatActivity {
                 int colorInactive = getResources().getColor(R.color.default_gray);
 
                 currentTotalSlept = b.getPositiveSum();
-                currentAwake = b.getYVals()[0];
-                currentRem = b.getYVals()[1];
-                currentLight = b.getYVals()[2];
-                currentDeep = b.getYVals()[3];
+                currentAwake = b.getYVals()[3];
+                currentRem = b.getYVals()[2];
+                currentLight = b.getYVals()[1];
+                currentDeep = b.getYVals()[0];
 
                 if (h.getX() == (float) 7) {
+
                     sleepBarChart.highlightValues(null);
                     totalNbr.setTextColor(colorInactive);
 
@@ -444,6 +447,7 @@ public class SleepActivity extends AppCompatActivity {
                     remNbr.setTextColor(color);
                     lightNbr.setTextColor(color);
                     deepNbr.setTextColor(color);
+                    switchSet();
                 }
 
 
@@ -458,8 +462,13 @@ public class SleepActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
-                switchSet();
+                if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    switchSet();
+                }
+                activeDate = Calendar.getInstance();
                 int color = getResources().getColor(R.color.default_gray);
+                toggleDateBox(activeDate);
+
                 totalNbr.setText(currentTotalSleptString);
                 awakeNbr.setText(currentAwakeString);
                 remNbr.setText(currentRemString);
@@ -503,15 +512,8 @@ public class SleepActivity extends AppCompatActivity {
     }
 
     private void switchSet() {
-        if (DateUtils.isToday(activeDate.getTimeInMillis())) {
-            if (!todayClickedTwice) {
-                todayClickedOnce = false;
-                todayClickedTwice = false;
-                switchSetHelper();
-            }
-        } else {
             switchSetHelper();
-        }
+
     }
 
     private void switchSetHelper() {

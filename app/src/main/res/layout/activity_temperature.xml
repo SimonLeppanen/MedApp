@@ -65,7 +65,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/temperature_icon_2"/>
+            android:layout_marginLeft="33dp"
+            android:src="@drawable/temperature_icon_2_normal"/>
         <TextView
             android:id="@+id/temp_nbr"
             android:onClick="tempNbrClicked"

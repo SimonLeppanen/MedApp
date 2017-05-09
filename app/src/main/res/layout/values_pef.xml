@@ -6,10 +6,14 @@
     android:layout_height="wrap_content"
     android:weightSum="3"
     android:divider="?android:attr/dividerHorizontal"
-    android:showDividers="middle|beginning|end">
+    android:showDividers="middle|beginning|end"
+    >
 
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,7 +38,10 @@
             android:text="510"/>
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,7 +67,10 @@
             android:text="515" />
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -86,7 +96,10 @@
             android:text="490" />
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -112,7 +125,10 @@
             android:text="487" />
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -138,7 +154,10 @@
             android:text="502" />
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -164,7 +183,10 @@
             android:text="505" />
     </TableRow>
     <TableRow
-        android:onClick="pefEntryClicked">
+        android:onClick="pefEntryClicked"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"

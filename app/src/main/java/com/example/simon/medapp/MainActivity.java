@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> mAdapter;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+    private AnimationDrawable heartAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
+        ImageView heartImage = (ImageView) findViewById(R.id.heart_animation_card);
+        heartImage.setBackgroundResource(R.drawable.heart_animation);
+        heartAnimation = (AnimationDrawable) heartImage.getBackground();
+        heartAnimation.start();
 
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);

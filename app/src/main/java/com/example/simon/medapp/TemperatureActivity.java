@@ -3,12 +3,14 @@ package com.example.simon.medapp;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -45,7 +47,7 @@ public class TemperatureActivity extends AppCompatActivity {
     private int feverColor;
     private int normalColor;
 
-    private float cursorTemp;
+    private String cursorTemp;
 
 
     private LineChart temperatureChart;
@@ -62,6 +64,7 @@ public class TemperatureActivity extends AppCompatActivity {
     private LineData lineData2;
 
     private boolean firstSetActive;
+    private ImageView temperatureImg;
 
 
     @Override
@@ -84,6 +87,9 @@ public class TemperatureActivity extends AppCompatActivity {
         activeDate = Calendar.getInstance();
         today = Calendar.getInstance();
         firstSetActive = true;
+        cursorTemp = "36,8";
+        temperatureImg = (ImageView) findViewById(R.id.temp_img);
+
 
         getTextViews();
         setDateInActivity(today);
@@ -106,10 +112,15 @@ public class TemperatureActivity extends AppCompatActivity {
         TextView dateBox = (TextView) findViewById(R.id.dateBox);
         dayBox.setText(Methods.getDay(calendar));
         dateBox.setText(Methods.getDate(calendar));
+        if (temperatureChart != null) {
+            temperatureChart.highlightValue(null,true);
+        }
         if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+            temperatureNbr.setText(temperatureNbrOrig);
             greyedOut(false);
         }
         if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+
             greyedOut(true);
         }
     }
@@ -119,11 +130,15 @@ public class TemperatureActivity extends AppCompatActivity {
             temperatureNbr.setAlpha(.33f);
             temperatureText.setAlpha(.33f);
             temperatureC.setAlpha(.33f);
+            temperatureImg.setAlpha(.33f);
         }
         if (!b) {
             temperatureNbr.setAlpha(1f);
             temperatureText.setAlpha(1f);
             temperatureC.setAlpha(1f);
+            temperatureImg.setAlpha(1f);
+
+
         }
     }
 
@@ -294,7 +309,7 @@ public class TemperatureActivity extends AppCompatActivity {
         // X-axis
         XAxis xAxis = temperatureChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
+        xAxis.setValueFormatter(new XAxisValueFormatter());
         temperatureSet1.setLineWidth(10);
         temperatureSet2.setLineWidth(10);
 
@@ -304,21 +319,21 @@ public class TemperatureActivity extends AppCompatActivity {
         temperatureChart.setData(lineData1);
 
         //Highlighter
-        temperatureSet1.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        temperatureSet1.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter1));
         temperatureSet1.setHighlightLineWidth(3f);
         temperatureSet1.setDrawHorizontalHighlightIndicator(false);
 
-        temperatureSet2.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter2));
+        temperatureSet2.setHighLightColor(ContextCompat.getColor(this,R.color.highlighter1));
         temperatureSet2.setHighlightLineWidth(3f);
         temperatureSet2.setDrawHorizontalHighlightIndicator(false);
 
         temperatureChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int colorHighlight = getResources().getColor(R.color.highlighter2);
+                int colorHighlight = getResources().getColor(R.color.highlighter1);
                 int colorDefault = getResources().getColor(R.color.default_gray);
                 int colorFever = getResources().getColor(R.color.temperature_fever);
-                cursorTemp = h.getY();
+                cursorTemp = Float.toString(h.getY());
                 greyedOut(false);
 
                 if (!isFever(e)) {
@@ -327,6 +342,8 @@ public class TemperatureActivity extends AppCompatActivity {
                     temperatureC.setTextColor(colorHighlight);
                     temperatureText.setText(temperatureTextOrig);
                     temperatureText.setTextColor(colorDefault);
+                    temperatureText.setTypeface(null, Typeface.NORMAL);
+                    temperatureImg.setImageResource(R.drawable.temperature_icon_2_normal);
                 }
 
                 if (isFever(e)) {
@@ -334,23 +351,33 @@ public class TemperatureActivity extends AppCompatActivity {
                     temperatureNbr.setTextColor(colorHighlight);
                     temperatureC.setTextColor(colorHighlight);
                     temperatureText.setText("FEVER");
+                    temperatureText.setTypeface(null, Typeface.BOLD);
                     temperatureText.setTextColor(colorFever);
+                    temperatureImg.setImageResource(R.drawable.temperature_icon_2_fever);
 
                 }
             }
 
             @Override
             public void onNothingSelected() {
+
                 if (DateUtils.isToday(activeDate.getTimeInMillis())) {
                     greyedOut(false);
+                    cursorTemp = temperatureNbrOrig;
+                    temperatureImg.setImageResource(R.drawable.temperature_icon_2_normal);
+                    temperatureText.setText(temperatureTextOrig);
+                    temperatureText.setTypeface(null, Typeface.NORMAL);
                 } else {
                     greyedOut(true);
                 }
                 int colorDefault = getResources().getColor(R.color.default_gray);
+
                 temperatureText.setTextColor(colorDefault);
-                temperatureNbr.setText(Float.toString(cursorTemp));
+
+                temperatureNbr.setText(cursorTemp);
                 temperatureNbr.setTextColor(colorDefault);
                 temperatureC.setTextColor(colorDefault);
+
             }
         });
 
@@ -401,28 +428,7 @@ public class TemperatureActivity extends AppCompatActivity {
     }
 }
 
-class MyYAxisValueFormatter implements IAxisValueFormatter {
 
-    boolean normal;
-    boolean fever;
-
-    public MyYAxisValueFormatter() {
-        normal = false;
-        fever = false;
-    }
-
-
-    @Override
-    public String getFormattedValue(float value, AxisBase axis) {
-        if (value == 35f) {
-            return "Normal";
-        }
-        if (value == 40f) {
-            return "Fever";
-        }
-        return "";
-    }
-}
 
 
 

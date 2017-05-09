@@ -32,6 +32,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 /**
  * Created by simon on 2017-04-18.
@@ -201,44 +202,116 @@ public class BPActivity extends AppCompatActivity {
     private void setupLineEntries() {
 
         entries_syst1 = new ArrayList<>();
-        entries_syst1.add(new Entry(00, 132));
-        entries_syst1.add(new Entry(01, 131));
-        entries_syst1.add(new Entry(02, 123));
-        entries_syst1.add(new Entry(03, 131));
-        entries_syst1.add(new Entry(04, 121));
-        entries_syst1.add(new Entry(05, 143));
-        entries_syst1.add(new Entry(06, 138));
-        entries_syst1.add(new Entry(07, 135));
+        entries_syst1.add(new Entry(0, 132));
+        entries_syst1.add(new Entry(1, 131));
+        entries_syst1.add(new Entry(2, 123));
+        entries_syst1.add(new Entry(3, 131));
+        entries_syst1.add(new Entry(4, 121));
+        entries_syst1.add(new Entry(5, 143));
+        entries_syst1.add(new Entry(6, 138));
+        entries_syst1.add(new Entry(7, 134));
+        entries_syst1.add(new Entry(8, 133));
+        entries_syst1.add(new Entry(9, 125));
+        entries_syst1.add(new Entry(10, 136));
+        entries_syst1.add(new Entry(11, 124));
+        entries_syst1.add(new Entry(12, 143));
+        entries_syst1.add(new Entry(13, 134));
+        entries_syst1.add(new Entry(14, 135));
+        entries_syst1.add(new Entry(15, 136));
+        entries_syst1.add(new Entry(16, 124));
+        entries_syst1.add(new Entry(17, 136));
+        entries_syst1.add(new Entry(18, 125));
+        entries_syst1.add(new Entry(19, 144));
+        entries_syst1.add(new Entry(20, 133));
+        entries_syst1.add(new Entry(21, 135));
+        entries_syst1.add(new Entry(22, 137));
+        entries_syst1.add(new Entry(23, 125));
+
 
         entries_diast1 = new ArrayList<>();
-        entries_diast1.add(new Entry(00, 71));
-        entries_diast1.add(new Entry(01, 77));
-        entries_diast1.add(new Entry(02, 67));
-        entries_diast1.add(new Entry(03, 81));
-        entries_diast1.add(new Entry(04, 71));
-        entries_diast1.add(new Entry(05, 74));
-        entries_diast1.add(new Entry(06, 78));
-        entries_diast1.add(new Entry(07, 72));
+        entries_diast1.add(new Entry(0, 71));
+        entries_diast1.add(new Entry(1, 77));
+        entries_diast1.add(new Entry(2, 67));
+        entries_diast1.add(new Entry(3, 81));
+        entries_diast1.add(new Entry(4, 71));
+        entries_diast1.add(new Entry(5, 74));
+        entries_diast1.add(new Entry(6, 78));
+        entries_diast1.add(new Entry(7, 72));
+        entries_diast1.add(new Entry(8, 77));
+        entries_diast1.add(new Entry(9, 67));
+        entries_diast1.add(new Entry(10, 84));
+        entries_diast1.add(new Entry(11, 75));
+        entries_diast1.add(new Entry(12, 76));
+        entries_diast1.add(new Entry(13, 77));
+        entries_diast1.add(new Entry(14, 79));
+        entries_diast1.add(new Entry(15, 76));
+        entries_diast1.add(new Entry(16, 65));
+        entries_diast1.add(new Entry(17, 84));
+        entries_diast1.add(new Entry(18, 75));
+        entries_diast1.add(new Entry(19, 76));
+        entries_diast1.add(new Entry(20, 77));
+        entries_diast1.add(new Entry(21, 78));
+        entries_diast1.add(new Entry(22, 76));
+        entries_diast1.add(new Entry(23, 78));
+
+
+
+
 
         entries_syst2 = new ArrayList<>();
-        entries_syst2.add(new Entry(00, 122));
-        entries_syst2.add(new Entry(01, 121));
-        entries_syst2.add(new Entry(02, 133));
-        entries_syst2.add(new Entry(03, 121));
-        entries_syst2.add(new Entry(04, 131));
-        entries_syst2.add(new Entry(05, 133));
-        entries_syst2.add(new Entry(06, 128));
-        entries_syst2.add(new Entry(07, 125));
+        entries_syst2.add(new Entry(0, 122));
+        entries_syst2.add(new Entry(1, 121));
+        entries_syst2.add(new Entry(2, 133));
+        entries_syst2.add(new Entry(3, 121));
+        entries_syst2.add(new Entry(4, 131));
+        entries_syst2.add(new Entry(5, 133));
+        entries_syst2.add(new Entry(6, 128));
+        entries_syst2.add(new Entry(7, 125));
+        entries_syst2.add(new Entry(8, 121));
+        entries_syst2.add(new Entry(9, 131));
+        entries_syst2.add(new Entry(10, 136));
+        entries_syst2.add(new Entry(11, 127));
+        entries_syst2.add(new Entry(12, 125));
+        entries_syst2.add(new Entry(13, 124));
+        entries_syst2.add(new Entry(14, 135));
+        entries_syst2.add(new Entry(15, 137));
+        entries_syst2.add(new Entry(16, 128));
+        entries_syst2.add(new Entry(17, 125));
+        entries_syst2.add(new Entry(18, 123));
+        entries_syst2.add(new Entry(19, 134));
+        entries_syst2.add(new Entry(20, 135));
+        entries_syst2.add(new Entry(21, 123));
+        entries_syst2.add(new Entry(22, 124));
+        entries_syst2.add(new Entry(23, 122));
+
+
 
         entries_diast2 = new ArrayList<>();
-        entries_diast2.add(new Entry(00, 74));
-        entries_diast2.add(new Entry(01, 73));
-        entries_diast2.add(new Entry(02, 64));
-        entries_diast2.add(new Entry(03, 86));
-        entries_diast2.add(new Entry(04, 74));
-        entries_diast2.add(new Entry(05, 73));
-        entries_diast2.add(new Entry(06, 72));
-        entries_diast2.add(new Entry(07, 71));
+        entries_diast2.add(new Entry(0, 74));
+        entries_diast2.add(new Entry(1, 73));
+        entries_diast2.add(new Entry(2, 64));
+        entries_diast2.add(new Entry(3, 86));
+        entries_diast2.add(new Entry(4, 74));
+        entries_diast2.add(new Entry(5, 73));
+        entries_diast2.add(new Entry(6, 72));
+        entries_diast2.add(new Entry(7, 71));
+        entries_diast2.add(new Entry(8, 76));
+        entries_diast2.add(new Entry(9, 75));
+        entries_diast2.add(new Entry(10, 64));
+        entries_diast2.add(new Entry(11, 85));
+        entries_diast2.add(new Entry(12, 76));
+        entries_diast2.add(new Entry(13, 78));
+        entries_diast2.add(new Entry(14, 77));
+        entries_diast2.add(new Entry(15, 75));
+        entries_diast2.add(new Entry(16, 74));
+        entries_diast2.add(new Entry(17, 73));
+        entries_diast2.add(new Entry(18, 67));
+        entries_diast2.add(new Entry(19, 85));
+        entries_diast2.add(new Entry(20, 76));
+        entries_diast2.add(new Entry(21, 77));
+        entries_diast2.add(new Entry(22, 78));
+        entries_diast2.add(new Entry(23, 77));
+
 
 
     }
@@ -299,6 +372,7 @@ public class BPActivity extends AppCompatActivity {
         // X-axis
         XAxis xAxis = bpLineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new XAxisValueFormatter());
 
 
         //Highlighter
@@ -424,11 +498,7 @@ public class BPActivity extends AppCompatActivity {
     private void switchSet() {
         if (DateUtils.isToday(activeDate.getTimeInMillis())) {
             setGreyedOut(false);
-            if (!todayClickedTwice) {
-                todayClickedOnce = false;
-                todayClickedTwice = false;
-                switchSetHelper();
-            }
+            switchSetHelper();
         } else {
             setGreyedOut(true);
             switchSetHelper();
@@ -565,9 +635,13 @@ public class BPActivity extends AppCompatActivity {
                 int toAdd = 7-(int) h.getX();
                 Calendar thisDate = Calendar.getInstance();
                 thisDate.add(Calendar.DATE,-toAdd);
+                Log.d("thisDate",Integer.toString(thisDate.get(Calendar.DATE)));
+                Log.d("activeDate",Integer.toString(activeDate.get(Calendar.DATE)));
+
+
                 activeDate = thisDate;
                 toggleDateBox(thisDate);
-                switchSet();
+
 
 
                 BarEntry bSyst = (BarEntry) e;
@@ -576,6 +650,8 @@ public class BPActivity extends AppCompatActivity {
                 int colorInactive = getResources().getColor(R.color.default_gray);
 
                 if (h.getX() == (float) 7) {
+
+                    setGreyedOut(false);
                     bpBarChart.highlightValues(null);
                     avgText.setTextColor(colorInactive);
                     avgSyst.setTextColor(colorInactive);
@@ -590,6 +666,7 @@ public class BPActivity extends AppCompatActivity {
                     avgSyst.setTextColor(color);
                     avgDiast.setTextColor(color);
                     setGreyedOut(true);
+                    switchSet();
                 }
                 bpLineChart.highlightValues(null);
 
@@ -607,12 +684,11 @@ public class BPActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
-                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
-                    todayClickedTwice = todayClickedOnce;
-                    todayClickedOnce = true;
 
+                if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    switchSet();
                 }
-                toggleDateBox(activeDate);
+                activeDate = today;
                 bpLineChart.highlightValues(null);
                 barSelected = false;
 
@@ -633,6 +709,7 @@ public class BPActivity extends AppCompatActivity {
 
 
                 setGreyedOut(false);
+                toggleDateBox(today);
 
             }
         });
