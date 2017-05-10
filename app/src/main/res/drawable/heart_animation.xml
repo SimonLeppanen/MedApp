@@ -3,6 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="false">
     <item
+        android:drawable="@drawable/heart_anim_12"
+        android:duration="@integer/heart_animation_duration"/>
+    <item
+        android:drawable="@drawable/heart_anim_15"
+        android:duration="@integer/heart_animation_duration"/>
+    <item
+        android:drawable="@drawable/heart_anim_17"
+        android:duration="@integer/heart_animation_duration"/>
+    <item
         android:drawable="@drawable/heart_anim_20"
         android:duration="@integer/heart_animation_duration"/>
     <item
@@ -17,12 +26,6 @@
     <item
         android:drawable="@drawable/heart_anim_24"
         android:duration="@integer/heart_animation_duration"/>
-    <!-- <item
-        android:drawable="@drawable/heart_anim_22"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_20"
-        android:duration="@integer/heart_animation_duration"/>-->
     <item
         android:drawable="@drawable/heart_anim_22"
         android:duration="@integer/heart_animation_duration"/>
@@ -49,23 +52,7 @@
         android:duration="@integer/heart_animation_duration"/>
     <item
         android:drawable="@drawable/heart_anim_12"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_11"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_10"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_11"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_12"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_15"
-        android:duration="@integer/heart_animation_duration"/>
-    <item
-        android:drawable="@drawable/heart_anim_17"
-        android:duration="@integer/heart_animation_duration"/>
+        android:duration="400"/>
+
+
 </animation-list>

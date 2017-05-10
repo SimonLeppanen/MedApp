@@ -31,10 +31,11 @@
                     android:textSize="18dp"
                     android:textStyle="bold"/>
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="36dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/bp_icon"/>
+                    android:src="@drawable/bp_icon_3_small"/>
             </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -70,9 +71,9 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:src="@drawable/bp_icon_2"
+                    android:id="@+id/bp_animation_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"/>
 
                 <LinearLayout

@@ -15,39 +15,104 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:textSize="@dimen/pef_procedure_text_size"
-                android:textStyle="bold"
-                android:text="1. "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:textSize="@dimen/pef_procedure_text_size"
-                android:textStyle="bold"
-                android:text="2. "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:textSize="@dimen/pef_procedure_text_size"
-                android:textStyle="bold"
-                android:text="3. "/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/pef_procedure_text_size"
-                android:textStyle="bold"
-                android:text="4. "/>
+            <LinearLayout
+                android:layout_width="@dimen/pef_viewsize"
+                android:layout_height="@dimen/pef_viewsize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/pef_margin">
+                <ImageView
+                    android:id="@+id/check_1"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:padding="2dp"
+                    android:src="@mipmap/ic_check_circle_black_18dp"
+                    android:gravity="center_vertical"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/nbr_1"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/pef_procedure_text_size"
+                    android:textStyle="bold"
+                    android:text="1."/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/pef_viewsize"
+                android:layout_height="@dimen/pef_viewsize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/pef_margin">
+
+                <ImageView
+                    android:id="@+id/check_2"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:padding="2dp"
+                    android:gravity="center_horizontal"
+                    android:src="@mipmap/ic_check_circle_black_18dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:id="@+id/nbr_2"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/pef_procedure_text_size"
+                    android:textStyle="bold"
+                    android:text="2."/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/pef_viewsize"
+                android:layout_height="@dimen/pef_viewsize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/pef_margin">
+                <ImageView
+                    android:id="@+id/check_3"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:padding="2dp"
+                    android:src="@mipmap/ic_check_circle_black_18dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/nbr_3"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/pef_procedure_text_size"
+                    android:textStyle="bold"
+                    android:text="3."/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="@dimen/pef_viewsize"
+                android:layout_height="@dimen/pef_viewsize"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/pef_margin">
+                <ImageView
+                    android:id="@+id/check_4"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:padding="2dp"
+                    android:src="@mipmap/ic_check_circle_black_18dp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/nbr_4"
+                    android:layout_width="@dimen/pef_viewsize"
+                    android:layout_height="@dimen/pef_viewsize"
+                    android:gravity="center_horizontal"
+                    android:textSize="@dimen/pef_procedure_text_size"
+                    android:textStyle="bold"
+                    android:text="4."/>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/text_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
@@ -55,6 +120,7 @@
                 android:textStyle="bold"
                 android:text="Please connect device"/>
             <TextView
+                android:id="@+id/text_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
@@ -62,13 +128,15 @@
                 android:textStyle="bold"
                 android:text="Take measurement"/>
             <TextView
+                android:id="@+id/text_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:textSize="@dimen/pef_procedure_text_size"
                 android:textStyle="bold"
-                android:text="Complete form below"/>
+                android:text="Fill in form below"/>
             <TextView
+                android:id="@+id/text_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/pef_procedure_text_size"
@@ -86,24 +154,8 @@
             android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="Location: "/>
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:inputType="textCapSentences"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:maxLines="1"
-                android:imeOptions="actionNext"
-                android:nextFocusForward="@+id/pef_comments"
-                android:textSize="16sp"/>
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,17 +165,59 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Location: "/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="6">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Work"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"/>
+            </LinearLayout>
+
+            <!--<EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_weight="8"
+                android:layout_marginRight="10dp"
+                android:inputType="textCapSentences"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@+id/pef_comments"
+                android:textSize="16sp"/>-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="40dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Comments: "/>
             <EditText
                 android:id="@+id/pef_comments"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:inputType="textCapSentences"
-                android:maxLines="1"
+                android:maxLines="8"
                 android:layout_weight="1"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="10dp"

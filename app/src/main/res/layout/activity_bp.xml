@@ -94,9 +94,9 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:src="@drawable/bp_icon_2"
+            android:id="@+id/bp_animation_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
 
         <LinearLayout
@@ -105,7 +105,9 @@
             android:layout_marginRight="30dp"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="avgBoxClicked">
             <TextView
                 android:id="@+id/right_syst_nbr"
                 android:layout_width="wrap_content"

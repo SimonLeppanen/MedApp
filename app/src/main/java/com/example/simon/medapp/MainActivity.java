@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private AnimationDrawable heartAnimation;
+    private AnimationDrawable bpAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
         ImageView heartImage = (ImageView) findViewById(R.id.heart_animation_card);
         heartImage.setBackgroundResource(R.drawable.heart_animation);
         heartAnimation = (AnimationDrawable) heartImage.getBackground();
         heartAnimation.start();
+
+        ImageView bpImage = (ImageView) findViewById(R.id.bp_animation_card);
+        bpImage.setBackgroundResource(R.drawable.bp_animation);
+        bpImage.setScaleX(.335f);
+        bpImage.setScaleY(.335f);
+        bpAnimation = (AnimationDrawable) bpImage.getBackground();
+        bpAnimation.start();
 
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);

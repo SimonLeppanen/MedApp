@@ -91,6 +91,7 @@ public class SleepActivity extends AppCompatActivity {
     private LineDataSet lineDataSetCurr;
     private boolean todayClickedTwice;
     private boolean todayClickedOnce;
+    private Calendar today;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,7 @@ public class SleepActivity extends AppCompatActivity {
         });
         firstSet = true;
         activeDate = Calendar.getInstance();
+        today = Calendar.getInstance();
         getTextViews();
         setDateInActivityMethod(activeDate);
         drawSleepGraphs();
@@ -218,8 +220,8 @@ public class SleepActivity extends AppCompatActivity {
         lineEntries1.add(new Entry(8, 2));
         lineEntries1.add(new Entry(9, 3));
         lineEntries1.add(new Entry(10, 3));
-        lineEntries1.add(new Entry(11, 3));
-        lineEntries1.add(new Entry(12, 3));
+        lineEntries1.add(new Entry(11, 4));
+        lineEntries1.add(new Entry(12, 4));
         lineEntries1.add(new Entry(13, 3));
         lineEntries1.add(new Entry(14, 3));
         lineEntries1.add(new Entry(15, 2));
@@ -247,7 +249,7 @@ public class SleepActivity extends AppCompatActivity {
         lineEntries2.add(new Entry(12, 2));
         lineEntries2.add(new Entry(13, 2));
         lineEntries2.add(new Entry(14, 3));
-        lineEntries2.add(new Entry(15, 3));
+        lineEntries2.add(new Entry(15, 4));
         lineEntries2.add(new Entry(16, 3));
         lineEntries2.add(new Entry(17, 2));
         lineEntries2.add(new Entry(18, 2));
@@ -506,7 +508,8 @@ public class SleepActivity extends AppCompatActivity {
         today.add(Calendar.DATE, -7);
         for (int i = 0; i < 7; i++) {
             today.add(Calendar.DATE, +1);
-            days[i] = dayFormat.format(today.getTime()).toUpperCase();
+                days[i] = dayFormat.format(today.getTime()).toUpperCase();
+
         }
         return days;
     }
@@ -569,6 +572,10 @@ public class SleepActivity extends AppCompatActivity {
                 //nowDiast.setText(nowDiastOrig1);
             }
         }
+    }
+
+    public void boxClicked(View view) {
+        setDateInActivityMethod(today);
     }
 }
 

@@ -9,5 +9,7 @@
     <dimen name="small_descriptive_caps">14sp</dimen>
     <dimen name="date_padding">12dp</dimen>
     <dimen name="date_width">90dp</dimen>
+    <dimen name="pef_viewsize">27dp</dimen>
+    <dimen name="pef_margin">7dp</dimen>
 
 </resources>

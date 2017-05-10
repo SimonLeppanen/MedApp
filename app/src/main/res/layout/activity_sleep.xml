@@ -68,7 +68,9 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:onClick="boxClicked">
             <TextView
                 android:id="@+id/total_nbr"
                 android:layout_width="wrap_content"
@@ -91,7 +93,9 @@
             android:orientation="vertical"
             android:layout_toLeftOf="@+id/sleep_nbrbox"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="boxClicked">
             <TextView
                 android:id="@+id/awake_text"
                 android:layout_width="wrap_content"
@@ -124,7 +128,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clickable="true"
+            android:onClick="boxClicked">
             <TextView
                 android:id="@+id/awake_nbr"
                 android:layout_width="wrap_content"

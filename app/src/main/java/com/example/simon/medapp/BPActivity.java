@@ -1,6 +1,7 @@
 package com.example.simon.medapp;
 
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -96,6 +98,9 @@ public class BPActivity extends AppCompatActivity {
     private LineData lineData2;
     private boolean todayClickedTwice;
     private boolean todayClickedOnce;
+    private AnimationDrawable bpAnimation;
+    private ImageView bpImage;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +127,16 @@ public class BPActivity extends AppCompatActivity {
                 bpBarChart.invalidate();
             }
         });
+
+
+        bpImage = (ImageView) findViewById(R.id.bp_animation_activity);
+        bpImage.setBackgroundResource(R.drawable.bp_animation);
+        bpImage.setScaleX(.335f);
+        bpImage.setScaleY(.335f);
+        bpAnimation = (AnimationDrawable) bpImage.getBackground();
+        bpAnimation.start();
+
+
         today = Calendar.getInstance();
         activeDate = Calendar.getInstance();
         firstSetActive = true;
@@ -409,10 +424,14 @@ public class BPActivity extends AppCompatActivity {
 
                 nowText.setText("CURSOR");
                 nowText.setTextColor(color);
+
+                bpImage.setAlpha(.33f);
+                bpAnimation.stop();
             }
 
             @Override
             public void onNothingSelected() {
+
                 lineHighlightActive = false;
                 /*int color = getResources().getColor(R.color.default_gray);
                 if (barSelected) {
@@ -436,6 +455,8 @@ public class BPActivity extends AppCompatActivity {
                     nowSyst.setTextColor(color);
                     nowDiast.setTextColor(color);
                     nowText.setTextColor(color);
+                    bpAnimation.start();
+                    bpImage.setAlpha(1f);
                     if (firstSetActive) {
                         nowSyst.setText(nowSystOrig1);
                         nowDiast.setText(nowDiastOrig1);
@@ -536,6 +557,9 @@ public class BPActivity extends AppCompatActivity {
             nowSyst.setAlpha(1f);
             nowDiast.setAlpha(1f);
             nowText.setAlpha(1f);
+            bpImage.setAlpha(1f);
+            bpAnimation.start();
+
         }
         if (b) {
             if (lineHighlightActive) {
@@ -547,6 +571,8 @@ public class BPActivity extends AppCompatActivity {
             nowSyst.setAlpha(.33f);
             nowDiast.setAlpha(.33f);
             nowText.setAlpha(.33f);
+            bpImage.setAlpha(.33f);
+            bpAnimation.stop();
         }
 
     }
@@ -756,7 +782,8 @@ public class BPActivity extends AppCompatActivity {
         rightnow.add(Calendar.DATE, -7);
         for (int i = 0; i < 7; i++) {
             rightnow.add(Calendar.DATE, +1);
-            days[i] = dayFormat.format(rightnow.getTime()).toUpperCase();
+                days[i] = dayFormat.format(rightnow.getTime()).toUpperCase();
+
         }
         return days;
     }
@@ -777,10 +804,15 @@ public class BPActivity extends AppCompatActivity {
         }
     }
 
+    public void avgBoxClicked(View view) {
+
+        setDateInActivityMethod(today);
+    }
+
     public void nowBoxClicked(View view) {
         if (lineHighlightActive) {
             int color = ContextCompat.getColor(this, R.color.default_gray);
-            bpLineChart.highlightValues(null);
+            bpLineChart.highlightValue(null,true);
 
             if (DateUtils.isToday(activeDate.getTimeInMillis())) {
                 nowSyst.setTextColor(color);
@@ -815,6 +847,7 @@ class DayValueFormatter implements IAxisValueFormatter {
 
     public DayValueFormatter(String[] days) {
         this.days = days;
+        days[6] = "TODAY";
 
     }
 
