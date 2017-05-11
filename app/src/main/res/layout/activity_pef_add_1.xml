@@ -84,28 +84,6 @@
                     android:textStyle="bold"
                     android:text="3."/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="@dimen/pef_viewsize"
-                android:layout_height="@dimen/pef_viewsize"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/pef_margin">
-                <ImageView
-                    android:id="@+id/check_4"
-                    android:layout_width="@dimen/pef_viewsize"
-                    android:layout_height="@dimen/pef_viewsize"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_check_circle_black_18dp"
-                    android:layout_gravity="center_vertical"
-                    android:visibility="gone"/>
-                <TextView
-                    android:id="@+id/nbr_4"
-                    android:layout_width="@dimen/pef_viewsize"
-                    android:layout_height="@dimen/pef_viewsize"
-                    android:gravity="center_horizontal"
-                    android:textSize="@dimen/pef_procedure_text_size"
-                    android:textStyle="bold"
-                    android:text="4."/>
-            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -126,22 +104,14 @@
                 android:layout_marginBottom="7dp"
                 android:textSize="@dimen/pef_procedure_text_size"
                 android:textStyle="bold"
-                android:text="Take measurement"/>
+                android:text="Take measurement three times"/>
             <TextView
                 android:id="@+id/text_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
                 android:textSize="@dimen/pef_procedure_text_size"
                 android:textStyle="bold"
-                android:text="Fill in form below"/>
-            <TextView
-                android:id="@+id/text_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/pef_procedure_text_size"
-                android:textStyle="bold"
-                android:text="Press add!"/>
+                android:text="Press next!"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -151,81 +121,59 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:gravity="center">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <TextView
+                android:id="@+id/measurement_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="1"
-                android:textSize="16sp"
+                android:text="490"
                 android:textStyle="bold"
-                android:text="Location: "/>
+                android:textSize="36sp" />
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="6">
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Work"/>
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Home"/>
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+                <View
+                    android:id="@+id/pef_line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:rotation="90"
+                    android:background="@color/default_gray"/>
             </LinearLayout>
-
-            <!--<EditText
+            <TextView
+                android:id="@+id/measurement_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_weight="8"
-                android:layout_marginRight="10dp"
-                android:inputType="textCapSentences"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:maxLines="1"
-                android:imeOptions="actionNext"
-                android:nextFocusForward="@+id/pef_comments"
-                android:textSize="16sp"/>-->
+                android:text="490"
+                android:textStyle="bold"
+                android:textSize="36sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+                <View
+                    android:id="@+id/pef_line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:rotation="90"
+                    android:background="@color/default_gray"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/measurement_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="490"
+                android:textStyle="bold"
+                android:textSize="36sp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="40dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="Comments: "/>
-            <EditText
-                android:id="@+id/pef_comments"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:inputType="textCapSentences"
-                android:maxLines="8"
-                android:layout_weight="1"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="10dp"
-                android:imeOptions="actionDone"
-                android:textSize="16sp"/>
-
-        </LinearLayout>
+            android:layout_weight="1"/>
         <Button
+            android:id="@+id/next_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -234,9 +182,9 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="ADD"
+            android:text="NEXT"
             android:clickable="true"
-            android:onClick="addClick"/>
+            android:onClick="nextClick"/>
     </LinearLayout>
 
 </LinearLayout>

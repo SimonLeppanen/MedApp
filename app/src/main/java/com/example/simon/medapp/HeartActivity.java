@@ -360,6 +360,7 @@ public class HeartActivity extends AppCompatActivity {
                     pulseNbr.setText(Integer.toString(pulse));
                     pulseNbr.setTextColor(default_gray);
                     pulseText.setTextColor(default_gray);
+                    heartZone.setText("RESTING");
                     pulseText.setText("PULSE");
                 }
             }

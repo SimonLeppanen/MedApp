@@ -56,6 +56,9 @@
             android:name=".PEFActivityAdd"
             android:label="PEF - add"
             android:parentActivityName=".PEFActivityMain" />
+        <activity android:name=".PEFActivityAdd2"
+            android:label="PEF - add"
+            android:parentActivityName=".PEFActivityAdd"/>
 
 
     </application>

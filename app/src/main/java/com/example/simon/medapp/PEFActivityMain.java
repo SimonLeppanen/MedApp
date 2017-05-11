@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by simon on 2017-04-19.
  */
