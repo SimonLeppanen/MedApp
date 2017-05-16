@@ -106,38 +106,46 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/rest_txt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_weight="1"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="48dp"
                     android:text="REST"
                     android:textSize="@dimen/small_descriptive_caps" />
 
                 <TextView
                     android:id="@+id/pulse_txt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_gravity="center|bottom"
+                    android:gravity="center"
                     android:text="PULSE"
                     android:textSize="@dimen/small_descriptive_caps" />
 
                 <TextView
                     android:id="@+id/hrv_txt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:paddingRight="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="HRV"
                     android:textSize="@dimen/small_descriptive_caps" />
                 </LinearLayout>
+            <TextView
+                android:id="@+id/heart_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/highlighter1"
+                android:textSize="@dimen/small_descriptive_caps"
+                android:text="00:00"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:orientation="horizontal">
                 <ImageView
                     android:id="@+id/heart_animation_activity"
@@ -159,12 +167,14 @@
             android:id="@+id/graph_heart"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginBottom="15dp"/>
         <TableLayout
             android:id="@+id/heart_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:visibility="gone">
 
             <TableRow
                 android:layout_marginBottom="5dp">

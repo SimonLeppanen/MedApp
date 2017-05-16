@@ -3,6 +3,7 @@ package com.example.simon.medapp;
 import android.text.format.DateUtils;
 import android.view.View;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,6 +44,12 @@ public class Methods {
     public static String getDate(Calendar d) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM, d");
         return dateFormat.format(d.getTime());
+    }
+
+    public static String timeGetter(float time) {
+        DecimalFormat d = new DecimalFormat("00");
+
+        return d.format(time) + ":00";
     }
 
 }

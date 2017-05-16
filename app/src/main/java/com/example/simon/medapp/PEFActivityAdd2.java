@@ -1,11 +1,13 @@
 package com.example.simon.medapp;
 
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -47,7 +49,7 @@ public class PEFActivityAdd2 extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (view.getId() == et2.getId()) {
-                    if (!rb3.isChecked()) {
+                    if (b) {
                         Log.d("et focussed", "yes");
                         rb3.setChecked(true);
                     }
@@ -60,9 +62,11 @@ public class PEFActivityAdd2 extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                if (i == rb3.getId() && !et2.isFocused()) {
+                if (i == rb3.getId()) {
                     Log.d("rb checked", "yes");
                     et2.requestFocus();
+                    InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 } else {
                     rb3.setChecked(false);
                     et2.clearFocus();

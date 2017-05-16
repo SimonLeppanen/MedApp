@@ -100,7 +100,8 @@ public class BPActivity extends AppCompatActivity {
     private boolean todayClickedOnce;
     private AnimationDrawable bpAnimation;
     private ImageView bpImage;
-
+    private TextView bpTime;
+    private ImageView dateForwardArrow;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,8 @@ public class BPActivity extends AppCompatActivity {
             }
         });
 
-
+        dateForwardArrow = (ImageView) findViewById(R.id.bp_dateForwardButton);
+        dateForwardArrow.setAlpha(.33f);
         bpImage = (ImageView) findViewById(R.id.bp_animation_activity);
         bpImage.setBackgroundResource(R.drawable.bp_animation);
         bpImage.setScaleX(.335f);
@@ -136,12 +138,15 @@ public class BPActivity extends AppCompatActivity {
         bpAnimation = (AnimationDrawable) bpImage.getBackground();
         bpAnimation.start();
 
+        bpTime = (TextView) findViewById(R.id.bp_time);
+
 
         today = Calendar.getInstance();
         activeDate = Calendar.getInstance();
         firstSetActive = true;
         getTextViews();
         setDateInActivityMethod(Calendar.getInstance());
+        toggleDateBox(today);
         drawGraphs();
 
     }
@@ -194,7 +199,7 @@ public class BPActivity extends AppCompatActivity {
 
 
         if (bpLineChart != null) {
-            bpLineChart.highlightValues(null);
+            bpLineChart.highlightValue(null,true);
         }
         if (bpBarChart != null) {
             SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
@@ -427,27 +432,18 @@ public class BPActivity extends AppCompatActivity {
 
                 bpImage.setAlpha(.33f);
                 bpAnimation.stop();
+
+                bpTime.setVisibility(View.VISIBLE);
+                bpTime.setText(Methods.timeGetter(e.getX()));
+
+
             }
 
             @Override
             public void onNothingSelected() {
-
                 lineHighlightActive = false;
-                /*int color = getResources().getColor(R.color.default_gray);
-                if (barSelected) {
-                    setGreyedOut(true);
-                } else if (!barSelected) {
-                    setGreyedOut(false);
-                }
-                nowSyst.setText(nowSystOrig1);
-                nowSyst.setTextColor(color);
-                nowDiast.setText(nowDiastOrig1);
-                nowDiast.setTextColor(color);
-                nowText.setText(nowTextOrig1);
-                nowText.setTextColor(color);*/
 
-
-
+                bpTime.setVisibility(View.INVISIBLE);
                 bpLineChart.highlightValues(null);
                 int color = getResources().getColor(R.color.default_gray);
 
@@ -661,22 +657,17 @@ public class BPActivity extends AppCompatActivity {
                 int toAdd = 7-(int) h.getX();
                 Calendar thisDate = Calendar.getInstance();
                 thisDate.add(Calendar.DATE,-toAdd);
-                Log.d("thisDate",Integer.toString(thisDate.get(Calendar.DATE)));
-                Log.d("activeDate",Integer.toString(activeDate.get(Calendar.DATE)));
-
 
                 activeDate = thisDate;
                 toggleDateBox(thisDate);
-
-
-
+                bpTime.setVisibility(View.INVISIBLE);
                 BarEntry bSyst = (BarEntry) e;
                 BarEntry bDiast = getDiastEntry(bSyst);
                 int color = getResources().getColor(R.color.highlighter2);
                 int colorInactive = getResources().getColor(R.color.default_gray);
 
                 if (h.getX() == (float) 7) {
-
+                    dateForwardArrow.setAlpha(.33f);
                     setGreyedOut(false);
                     bpBarChart.highlightValues(null);
                     avgText.setTextColor(colorInactive);
@@ -687,6 +678,7 @@ public class BPActivity extends AppCompatActivity {
                     nowDiast.setText(nowDiastOrig1);
                 }
                 if (!(h.getX() == (float) 7)) {
+                    dateForwardArrow.setAlpha(1f);
                     barSelected = true;
                     avgText.setTextColor(color);
                     avgSyst.setTextColor(color);
@@ -713,11 +705,17 @@ public class BPActivity extends AppCompatActivity {
 
                 if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
                     switchSet();
+                    dateForwardArrow.setAlpha(1f);
                 }
-                activeDate = today;
+
+
+                activeDate = Calendar.getInstance();
                 bpLineChart.highlightValues(null);
                 barSelected = false;
 
+                if (DateUtils.isToday(activeDate.getTimeInMillis())) {
+                    dateForwardArrow.setAlpha(.33f);
+                }
                 int color = getResources().getColor(R.color.default_gray);
 
                 avgText.setTextColor(color);
@@ -733,6 +731,7 @@ public class BPActivity extends AppCompatActivity {
                 nowDiast.setText(nowDiastOrig1);
                 nowDiast.setTextColor(color);
 
+                bpTime.setVisibility(View.INVISIBLE);
 
                 setGreyedOut(false);
                 toggleDateBox(today);

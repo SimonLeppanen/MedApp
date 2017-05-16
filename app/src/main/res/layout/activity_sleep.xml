@@ -26,8 +26,7 @@
             android:layout_marginLeft="@dimen/date_padding"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:onClick="dateButtonClick">
+            android:gravity="center">
             <TextView
                 android:id="@+id/dayBox"
                 android:layout_width="wrap_content"

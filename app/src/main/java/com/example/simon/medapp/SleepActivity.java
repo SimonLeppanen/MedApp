@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -92,6 +93,7 @@ public class SleepActivity extends AppCompatActivity {
     private boolean todayClickedTwice;
     private boolean todayClickedOnce;
     private Calendar today;
+    private ImageView dateForwardArrow;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +118,11 @@ public class SleepActivity extends AppCompatActivity {
         firstSet = true;
         activeDate = Calendar.getInstance();
         today = Calendar.getInstance();
+        dateForwardArrow = (ImageView) findViewById(R.id.sleep_dateForwardButton);
+        dateForwardArrow.setAlpha(.33f);
         getTextViews();
         setDateInActivityMethod(activeDate);
+        toggleDateBox(today);
         drawSleepGraphs();
     }
 
@@ -432,7 +437,7 @@ public class SleepActivity extends AppCompatActivity {
                 currentDeep = b.getYVals()[0];
 
                 if (h.getX() == (float) 7) {
-
+                    dateForwardArrow.setAlpha(.33f);
                     sleepBarChart.highlightValues(null);
                     totalNbr.setTextColor(colorInactive);
 
@@ -444,6 +449,7 @@ public class SleepActivity extends AppCompatActivity {
                 }
 
                 if (!(h.getX() == (float) 7)) {
+                    dateForwardArrow.setAlpha(1f);
                     totalNbr.setTextColor(color);
                     awakeNbr.setTextColor(color);
                     remNbr.setTextColor(color);

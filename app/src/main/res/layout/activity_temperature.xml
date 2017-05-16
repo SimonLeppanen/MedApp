@@ -58,8 +58,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="25dp">
+        android:layout_marginTop="10dp">
         <ImageView
             android:id="@+id/temp_img"
             android:layout_width="80dp"
@@ -85,15 +84,27 @@
             android:layout_marginLeft="5dp"
             android:text="°C"
             android:textSize="24sp"/>
+
         <TextView
             android:id="@+id/temp_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/temp_nbr"
             android:layout_centerHorizontal="true"
-            android:paddingRight="20dp"
+            android:layout_marginTop="5dp"
             android:text="NORMAL"
             android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/temp_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/temp_text"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/small_descriptive_caps"
+            android:textColor="@color/highlighter1"
+            android:visibility="invisible"
+            android:text="00:00"/>
     </RelativeLayout>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/graph_temperature"
@@ -103,7 +114,8 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"

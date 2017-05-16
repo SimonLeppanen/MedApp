@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,8 @@ public class TemperatureActivity extends AppCompatActivity {
 
     private boolean firstSetActive;
     private ImageView temperatureImg;
+    private TextView tempTime;
+    private ImageView rightDateArrow;
 
 
     @Override
@@ -84,12 +87,13 @@ public class TemperatureActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.colorCardHeader)));
 
+        rightDateArrow = (ImageView) findViewById(R.id.temp_dateForwardButton);
         activeDate = Calendar.getInstance();
         today = Calendar.getInstance();
         firstSetActive = true;
         cursorTemp = "36,8";
         temperatureImg = (ImageView) findViewById(R.id.temp_img);
-
+        tempTime = (TextView) findViewById(R.id.temp_time);
 
         getTextViews();
         setDateInActivity(today);
@@ -117,10 +121,12 @@ public class TemperatureActivity extends AppCompatActivity {
         }
         if (DateUtils.isToday(activeDate.getTimeInMillis())) {
             temperatureNbr.setText(temperatureNbrOrig);
+            rightDateArrow.setAlpha(.33f);
+
             greyedOut(false);
         }
         if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
-
+            rightDateArrow.setAlpha(1f);
             greyedOut(true);
         }
     }
@@ -334,6 +340,8 @@ public class TemperatureActivity extends AppCompatActivity {
                 int colorDefault = getResources().getColor(R.color.default_gray);
                 int colorFever = getResources().getColor(R.color.temperature_fever);
                 cursorTemp = Float.toString(h.getY());
+                tempTime.setVisibility(View.VISIBLE);
+                tempTime.setText(Methods.timeGetter(h.getX()));
                 greyedOut(false);
 
                 if (!isFever(e)) {
@@ -360,7 +368,7 @@ public class TemperatureActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected() {
-
+                tempTime.setVisibility(View.INVISIBLE);
                 if (DateUtils.isToday(activeDate.getTimeInMillis())) {
                     greyedOut(false);
                     cursorTemp = temperatureNbrOrig;

@@ -91,13 +91,23 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/small_descriptive_caps"
                 android:text="NOW"/>
+            <TextView
+                android:id="@+id/bp_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/small_descriptive_caps"
+                android:textColor="@color/highlighter1"
+                android:visibility="invisible"
+                android:text="00:00"/>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/bp_animation_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -128,15 +138,17 @@
                 android:text="DAILY AVG"/>
         </LinearLayout>
     </RelativeLayout>
+
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/linegraph_bp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"/>
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bargraph_bp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"/>
 
 

@@ -86,6 +86,9 @@ public class HeartActivity extends AppCompatActivity {
     private int pulseOrig;
 
     private AnimationDrawable heartAnimation;
+    private String time;
+    private TextView heartTime;
+    private ImageView dateForwardArrow;
 
 
     @Override
@@ -94,8 +97,6 @@ public class HeartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_heart);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.colorCardHeader)));
-        TableLayout t = (TableLayout) findViewById(R.id.heart_table);
-        t.setVisibility(View.INVISIBLE);
 
         //Runs graph to be able to create layout
         findViewById(R.id.graph_heart).post(new Runnable() {
@@ -111,6 +112,8 @@ public class HeartActivity extends AppCompatActivity {
         heartAnimation = (AnimationDrawable) heartImage.getBackground();
         heartAnimation.start();
 
+        dateForwardArrow = (ImageView) findViewById(R.id.heart_dateForwardButton);
+        heartTime = (TextView) findViewById(R.id.heart_time);
         pulse = 67;
         currentPulse = 67;
         pulseOrig = 67;
@@ -154,9 +157,11 @@ public class HeartActivity extends AppCompatActivity {
         dayBox.setText(Methods.getDay(calendar));
         dateBox.setText(Methods.getDate(calendar));
         if (!DateUtils.isToday(calendar.getTimeInMillis())) {
+            dateForwardArrow.setAlpha(1f);
             grayedOut(true);
         }
         if (DateUtils.isToday(calendar.getTimeInMillis())) {
+            dateForwardArrow.setAlpha(.33f);
             grayedOut(false);
         }
     }
@@ -320,7 +325,8 @@ public class HeartActivity extends AppCompatActivity {
                     int highlighter1 = getResources().getColor(R.color.highlighter1);
                     heartZone = (TextView) findViewById(R.id.heartZone);
                     pulse = (int) h.getY();
-
+                    heartTime.setVisibility(View.VISIBLE);
+                    heartTime.setText(Methods.timeGetter(h.getX()));
                     if (pulse < fatburnLimit) {
                         heartZone.setText("RESTING");
                     } else if (pulse >= fatburnLimit && pulse < cardioLimit) {
@@ -347,6 +353,7 @@ public class HeartActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected() {
                 int default_gray = getResources().getColor(R.color.default_gray);
+                heartTime.setVisibility(View.INVISIBLE);
                 if (!DateUtils.isToday(activeDate.getTimeInMillis())) {
                     grayedOut(true);
                     heartAnimation.stop();
@@ -479,7 +486,10 @@ public class HeartActivity extends AppCompatActivity {
         pulseText.setText("PULSE");*/
     }
 
+
 }
+
+
 
 
 class XAxisValueFormatter implements IAxisValueFormatter {
